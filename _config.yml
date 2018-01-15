@@ -17,11 +17,74 @@ root: /
 permalink: :year/:month/:day/:title/
 permalink_defaults:
 
+#Custom Setting Start
+
+# Site settings
+SEOTitle: Canon的博客 | Canon's Blog
+header-img: img/home-bg.jpg
+email: 
+keyword: ""
+
+
+# SNS settings
+# RSS: false
+weibo_username:     
+zhihu_username:     
+github_username:    
+twitter_username:   
+facebook_username:  
+linkedin_username:  
+
+# Build settings
+anchorjs: true                          # if you want to customize anchor. check out line:181 of `post.html`
+
+
+# Disqus settings
+disqus_username: technonacgithub
+
+# Duoshuo settings
+# duoshuo_username: kaijun
+# Share component is depend on Comment so we can NOT use share only.
+duoshuo_share: false                     # set to false if you want to use Comment without Sharing
+
+
+# Analytics settings
+# Baidu Analytics
+ba_track_id: 
+# Google Analytics
+ga_track_id:             # Format: UA-xxxxxx-xx
+ga_domain: 
+
+
+# Sidebar settings
+sidebar: true                           # whether or not using Sidebar.
+sidebar-about-description: "代码改变生活"
+sidebar-avatar: img/avatar.jpg      # use absolute URL, seeing it's used in both `/` and `/about/`
+
+
+# Featured Tags
+featured-tags: true                     # whether or not using Feature-Tags
+featured-condition-size: 1              # A tag will be featured if the size of it is more than this condition value
+
+
+# Friends
+friends: [
+    {
+        title: "github",
+        href: "http://github.com"
+    },
+]
+
+
+#Custom Setting End
+
+
+
 # Directory
 source_dir: source
 public_dir: public
 tag_dir: tags
-archive_dir: archives
+archive_dir: i_dont_wanna_use_default_archives
 category_dir: categories
 code_dir: downloads/code
 i18n_dir: :lang
@@ -34,15 +97,15 @@ titlecase: false # Transform title into titlecase
 external_link: true # Open external links in new tab
 filename_case: 0
 render_drafts: false
-post_asset_folder: false
+post_asset_folder: true
 relative_link: false
 future: true
 highlight:
   enable: true
   line_number: true
-  auto_detect: false
+  auto_detect: true
   tab_replace:
-  
+
 # Home page setting
 # path: Root path for your blogs index page. (default = '')
 # per_page: Posts displayed per page. (0 = disable pagination)
@@ -78,6 +141,5 @@ theme: huxblog
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type: git
-  repo: https://github.com/technonac/technonac.github.io
-  branch: master
-
+  repo: https://github.com/Kaijun/hexo-theme-huxblog
+  branch: gh-pages
