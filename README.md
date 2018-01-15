@@ -1,0 +1,2 @@
+# technonac.github.io
+blog
