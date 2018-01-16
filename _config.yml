@@ -141,5 +141,5 @@ theme: huxblog
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type: git
-  repo: https://github.com/Kaijun/hexo-theme-huxblog
-  branch: gh-pages
+  repo: https://github.com/technonac/technonac.github.io
+  branch: master
