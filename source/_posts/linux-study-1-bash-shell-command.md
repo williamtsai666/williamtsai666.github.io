@@ -6,35 +6,35 @@ tags:
     - Shell
 ---
 
-### 1. 基本的bash shell命令 
+## 1. 基本的bash shell命令 
 
- ####  Linux 文件系统 
+###  Linux 文件系统 
 
-##### 常见Linux目录名称 
+#### 常见Linux目录名称 
 
-| 目    录 | 用    途                         |
+| 目    录 | 用    途                        |
 | ------ | ------------------------------ |
-| /      | 虚拟目录的根目录。通常不会在这里存储文件           |
-| /bin   | 二进制目录，存放许多用户级的GNU工具            |
+| /      | 虚拟目录的根目录。通常不会在这里存储文件          |
+| /bin  | 二进制目录，存放许多用户级的GNU工具            |
 | /boot  | 启动目录，存放启动文件                    |
-| /dev   | 设备目录，Linux在这里创建设备节点            |
-| /etc   | 系统配置文件目录                       |
-| /home  | 主目录，Linux在这里创建用户目录             |
-| /lib   | 库目录，存放系统和应用程序的库文件              |
-| /media | 媒体目录，可移动媒体设备的常用挂载点             |
-| /mnt   | 挂载目录，另一个可移动媒体设备的常用挂载点          |
-| /opt   | 可选目录，常用于存放第三方软件包和数据文件          |
+| /dev  | 设备目录，Linux在这里创建设备节点            |
+| /etc  | 系统配置文件目录                      |
+| /home  | 主目录，Linux在这里创建用户目录            |
+| /lib  | 库目录，存放系统和应用程序的库文件              |
+| /media | 媒体目录，可移动媒体设备的常用挂载点            |
+| /mnt  | 挂载目录，另一个可移动媒体设备的常用挂载点          |
+| /opt  | 可选目录，常用于存放第三方软件包和数据文件          |
 | /proc  | 进程目录，存放现有硬件及当前进程的相关信息          |
-| /root  | root用户的主目录                     |
+| /root  | root用户的主目录                    |
 | /sbin  | 系统二进制目录，存放许多GNU管理员级工具          |
-| /run   | 运行目录，存放系统运作时的运行时数据             |
-| /srv   | 服务目录，存放本地服务的相关文件               |
-| /sys   | 系统目录，存放系统硬件信息的相关文件             |
-| /tmp   | 临时目录，可以在该目录中创建和删除临时工作文件        |
-| /usr   | 用户二进制目录，大量用户级的GNU工具和数据文件都存储在这里 |
-| /var   | 可变目录，用以存放经常变化的文件，比如日志文件        |
+| /run  | 运行目录，存放系统运作时的运行时数据            |
+| /srv  | 服务目录，存放本地服务的相关文件              |
+| /sys  | 系统目录，存放系统硬件信息的相关文件            |
+| /tmp  | 临时目录，可以在该目录中创建和删除临时工作文件        |
+| /usr  | 用户二进制目录，大量用户级的GNU工具和数据文件都存储在这里 |
+| /var  | 可变目录，用以存放经常变化的文件，比如日志文件        |
 
-##### 查看帮助命令
+#### 查看帮助命令
 
 ```bash
 man command
@@ -44,7 +44,7 @@ command --help
 e.g. ls --help
 ```
 
-##### 遍历目录(`cd`)
+#### 遍历目录(`cd`)
 
 ```bash
 cd destination
@@ -62,7 +62,7 @@ christine@server01:/usr/bin$ pwd
 christine@server01:~/Documents$ cd ..
 ```
 
-#### 文件和目录列表(`ls`)
+### 文件和目录列表(`ls`)
 
 ```bash
 ls option
@@ -74,7 +74,7 @@ ls option
 $ ls -l 
 total 48 
 drwxr-xr-x 2 christine christine 4096 Apr 22 20:37 Desktop 
--rwxrw-r-- 1 christine christine   54 May 21 11:26 my_script 
+-rwxrw-r-- 1 christine christine  54 May 21 11:26 my_script 
 # 参数说明
 # 文件类型[目录（ d ）,文件（ - ）,字符型文件（ c ）,块设备（ b ）]
 # 文件的权限 
@@ -94,15 +94,15 @@ $ ls -l my*
 ls -l my_scr[ai]pt 
 ```
 
-#### 处理文件 
+### 处理文件 
 
-##### 创建文件 
+#### 创建文件 
 
 ```bash
 touch new_file
 ```
 
-##### 复制文件
+#### 复制文件
 
 ```bash
 cp source destination
@@ -110,7 +110,7 @@ cp source destination
 -R, -r, --recursive 递归拷贝 copy directories recursively
 ```
 
-##### 链接文件
+#### 链接文件
 
 ```bash
 在Linux中有两种不同类型的文件链接： 1.符号链接  2.硬链接 
@@ -139,7 +139,7 @@ $ ls -li *code_file
 
 ```
 
-##### 重命名文件(移动/moving)
+#### 重命名文件(移动/moving)
 
 ```bash
 # mv 来移动文件的位置
@@ -149,7 +149,7 @@ $ mv src dest
 $ mv /home/christine/Pictures/fzll  /home/christine/fall 
 ```
 
-##### 删除文件
+#### 删除文件
 
 ```bash
 rm option file
@@ -160,9 +160,9 @@ rm option file
 $ rm -rf file_or_dir
 ```
 
-#### 处理目录
+### 处理目录
 
-##### 创建目录
+#### 创建目录
 
 ```bash
 mkdir New_Dir 
@@ -170,7 +170,7 @@ mkdir New_Dir
 $ mkdir -p New_Dir/Sub_Dir/Under_Dir 
 ```
 
-##### 删除目录 
+#### 删除目录 
 
 ```bash
 rmdir New_Dir 
@@ -179,16 +179,16 @@ rmdir New_Dir
 rm -rf New_Dir
 ```
 
-##### 查看目录(tree)
+#### 查看目录(tree)
 
 ```bash
 # tree 工具 :美观的方式展示目录、子目录及其中的文件
 tree dir 
 ```
 
-#### 查看文件内容
+### 查看文件内容
 
-##### 查看文件类型
+#### 查看文件类型
 
 ```bash
 file file_name
@@ -205,9 +205,9 @@ $ file /bin/ls
 /bin/ls: ELF 64-bit LSB  executable, x86-64, version 1 (SYSV),  # 二进制可执行程序
 dynamically linked (uses shared libs), for GNU/Linux 2.6.24,  
 ```
-##### 查看整个文件 
+#### 查看整个文件 
 
-######  1.cat命令 
+#####  1.cat命令 
 
 ```bash
 cat file #显示文本文件中所有数据
@@ -215,7 +215,7 @@ cat file #显示文本文件中所有数据
 -b 给有文本的行加上行号
 ```
 
-###### 2.more命令
+#### 2.more命令
 
 ```bash
 more file # 分页工具
@@ -224,31 +224,31 @@ more file # 分页工具
 q:退出
 ```
 
-###### 3.less命令 
+##### 3.less命令 
 
 ```bash
 less file
 # less is more, more命令的升级版
 ```
 
-##### 查看部分文件 
+#### 查看部分文件 
 
-###### 1.tail命令 
+##### 1.tail命令 
 
 ```bash
 # tai命令会显示文件最后几行的内容。默认情况下，它会显示文件的末尾10行
 tail file
- -n, --lines=[+]NUM output  the last NUM lines, instead of the last 10; or use -n +NUM to output starting with line NUM 控制显示行数
- -f, --follow[={name|descriptor}]
+-n, --lines=[+]NUM output  the last NUM lines, instead of the last 10; or use -n +NUM to output starting with line NUM 控制显示行数
+-f, --follow[={name|descriptor}]
               output appended data as the file grows;
               an absent option argument means 'descriptor'
-              允许你在其他进程使用该文件时查看文件的内容。tail 命令会保持活动状态，并不断显示添加到文件               中的内容。这是实时监测系统日志的绝妙方式。 
+              允许你在其他进程使用该文件时查看文件的内容。tail 命令会保持活动状态，并不断显示添加到文件              中的内容。这是实时监测系统日志的绝妙方式。 
 $ tail -n 2 log_file # 显示最后两行
 line19 
 Last line - line20 
 ```
 
-###### 2.head命令
+##### 2.head命令
 
 ```bash
 # head命令，显示文件开头那些行的内容。默认情况下，它会显示文件前10行的文本.\
@@ -257,11 +257,11 @@ head file
 head -5 log_file #显示5行
 ```
 
-### 2.更多的bash shell命令 
+## 2.更多的bash shell命令 
 
-#### 监测程序
+### 监测程序
 
-##### 探查进程(`ps`)
+#### 探查进程(`ps`)
 
 Linux系统中使用的GNU `ps` 命令支持3种不同类型的命令行参数： 
 
@@ -334,8 +334,8 @@ $
 # -ef选项 -e 参数指定显示所有运行在系统上的进程； -f 参数则扩展了输出
 $ ps -ef 
 UID        PID  PPID  C STIME TTY          TIME CMD 
-root         1     0  0 11:29 ?        00:00:01 init [5] 
-root         2     0  0 11:29 ?        00:00:00 [kthreadd] 
+root        1    0  0 11:29 ?        00:00:01 init [5] 
+root        2    0  0 11:29 ?        00:00:00 [kthreadd] 
 root      3078  1981  0 12:00 ?        00:00:00 sshd: rich [priv] 
 rich      3080  3078  0 12:00 ?        00:00:00 sshd: rich@pts/0 
 rich      3081  3080  0 12:00 pts/0    00:00:00 -bash 
@@ -352,9 +352,9 @@ CMD：启动的程序名称。
 
 # -l 参数，它会产生一个长格式输出。
 $ ps -l 
-F S  UID PID  PPID  C PRI  NI ADDR SZ WCHAN  TTY      TIME   CMD 
-0 S  500 3081  3080  0  80   0 -  1173 wait pts/0   00:00:00 bash 
-0 R  500 4463  3081  1  80   0 -  1116 -    pts/0   00:00:00 ps 
+F S  UID PID  PPID  C PRI  NI ADDR SZ WCHAN  TTY      TIME  CMD 
+0 S  500 3081  3080  0  80  0 -  1173 wait pts/0  00:00:00 bash 
+0 R  500 4463  3081  1  80  0 -  1116 -    pts/0  00:00:00 ps 
 # 参数说明
 F ：内核分配给进程的系统标记。 
 S ：进程的状态（O代表正在运行；S代表在休眠；R代表可运行，正等待运行；Z代表僵化，进程已结束但父进程已不存在；T代表停止）。 
@@ -371,20 +371,20 @@ $ ps -elf
 $ ps --forest
 ```
 
-##### 实时监测进程 (top)
+#### 实时监测进程 (top)
 
 ```bash
 top - 09:42:15 up 10 days,  9:55,  1 user,  load average: 0.00, 0.00, 0.00
-Tasks:  22 total,   1 running,  21 sleeping,   0 stopped,   0 zombie
+Tasks:  22 total,  1 running,  21 sleeping,  0 stopped,  0 zombie
 Cpu(s):  0.3%us,  0.0%sy,  0.0%ni, 99.7%id,  0.0%wa,  0.0%hi,  0.0%si,  0.0%st
-Mem:    524288k total,   110564k used,   413724k free,        0k buffers
+Mem:    524288k total,  110564k used,  413724k free,        0k buffers
 Swap:    65536k total,    65536k used,        0k free,    28868k cached
   PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND
-    1 root      20   0 19232  116   24 S  0.0  0.0   0:00.01 init
-    3 root      20   0     0    0    0 S  0.0  0.0   0:00.00 khelper/512917
-  866 mysql     20   0  373m 1336  128 S  0.0  0.3   1:36.24 mysqld
-  943 root      20   0 1194m  28m 3664 S  0.0  5.6   0:42.29 node
-11213 root      20   0 11440 1788 1400 S  0.0  0.3   0:00.00 bash
+    1 root      20  0 19232  116  24 S  0.0  0.0  0:00.01 init
+    3 root      20  0    0    0    0 S  0.0  0.0  0:00.00 khelper/512917
+  866 mysql    20  0  373m 1336  128 S  0.0  0.3  1:36.24 mysqld
+  943 root      20  0 1194m  28m 3664 S  0.0  5.6  0:42.29 node
+11213 root      20  0 11440 1788 1400 S  0.0  0.3  0:00.00 bash
 
 # 说明
 ## 第一部分 :系统的概况
@@ -421,9 +421,9 @@ d :修改轮询间隔。
 q :退出 
 ```
 
-##### 结束进程
+#### 结束进程
 
-###### Linux进程信号
+##### Linux进程信号
 
 在Linux中，进程之间通过信号来通信。进程的信号就是预定义好的一个消息，进程能识别它并决定忽略还是作出反应。进程如何处理信号是由开发人员通过编程来决定的。
 
@@ -434,14 +434,14 @@ q :退出
 2    INT  中断 
 3    QUIT  结束运行 
 9    KILL  无条件终止 
-11   SEGV  段错误 
-15   TERM  尽可能终止 
-17   STOP  无条件停止运行，但不终止 
-18   TSTP  停止或暂停，但继续在后台运行 
-19   CONT  在STOP或TSTP之后恢复执行 
+11  SEGV  段错误 
+15  TERM  尽可能终止 
+17  STOP  无条件停止运行，但不终止 
+18  TSTP  停止或暂停，但继续在后台运行 
+19  CONT  在STOP或TSTP之后恢复执行 
 ```
 
-###### kill命令 
+##### kill命令 
 
 ```bash
 # kill 命令可通过进程ID（PID）给进程发信号。默认情况下， kill 命令会向命令行中列出的全部PID发送一个 TERM 信号
@@ -454,20 +454,20 @@ $ kill -s HUP 3940
 $ kill -9 3940
 ```
 
-###### killall命令 
+##### killall命令 
 
 ```bash
 # killall 它支持通过进程名而不是PID来结束进程。 killall 命令也支持通配符
 $ killall http* 
 ```
 
-#### 监测磁盘空间 
+### 监测磁盘空间 
 
-#####  挂载存储媒体
+####  挂载存储媒体
 
 Linux文件系统将所有的磁盘都并入一个虚拟目录下。在使用新的存储媒体之前，需要把它放到虚拟目录下。这项工作称为挂载（mounting）
 
-######   1.mount命令 
+#####  1.mount命令 
 
 ```bash
 # Linux上用来挂载媒体的命令叫作mount 。默认情况下， mount命令会输出当前系统上挂载的设备列表
@@ -521,7 +521,7 @@ check=none ：挂载文件系统时不进行完整性校验。
 loop ：挂载一个文件。 
 ```
 
-###### 2.umount命令
+##### 2.umount命令
 
 ```bash
 # 从Linux系统上移除一个可移动设备时，不能直接从系统上移除，而应该先卸载。
@@ -540,14 +540,14 @@ total 0
 #  单： lsof /path/to/device/node ，或者 lsof /path/to/mount/point 。
 ```
 
-##### 使用 df 命令 
+#### 使用 df 命令 
 
 ```bash
 # 查看所有已挂载磁盘的使用情况, df命令会显示每个有数据的已挂载文件系统
 $ df 
-Filesystem           1K-blocks      Used Available Use% Mounted on 
-/dev/sda2             18251068   7703964   9605024  45% / 
-/dev/sda1               101086     18680     77187  20% /boot 
+Filesystem          1K-blocks      Used Available Use% Mounted on 
+/dev/sda2            18251068  7703964  9605024  45% / 
+/dev/sda1              101086    18680    77187  20% /boot 
 # 参数说明
 ## 设备的设备文件位置； 
 ## 能容纳多少个1024字节大小的块； 
@@ -560,19 +560,19 @@ Filesystem           1K-blocks      Used Available Use% Mounted on
 $ df -h 
 Filesystem            Size  Used Avail Use% Mounted on 
 /dev/sdb2              18G  7.4G  9.2G  45% / 
-/dev/sda1              99M   19M   76M  20% /boot 
+/dev/sda1              99M  19M  76M  20% /boot 
 ```
 
-##### 使用 du 命令 
+#### 使用 du 命令 
 
 ```bash
 # du命令可以显示某个特定目录（默认情况下是当前目录）的磁盘使用情况
 # 默认情况下， du 命令会显示当前目录下所有的文件、目录和子目录的磁盘使用情况，它会以磁盘块为单位来表明每个文件或目录占用了多大存储空间。对标准大小的目录来说，这个输出会是一个比较长的列表
 $ du 
-484     ./.gstreamer-0.10 
-8       ./Templates 
-8       ./Download 
-8       ./.ccache/7/0 
+484    ./.gstreamer-0.10 
+8      ./Templates 
+8      ./Download 
+8      ./.ccache/7/0 
 # 每行输出左边的数值是每个文件或目录占用的磁盘块数。注意，这个列表是从目录层级的最底部开始，然后按文件、子目录、目录逐级向上
 
 # 常见参数
@@ -584,9 +584,9 @@ $ du
 du -h
 ```
 
-#### 处理数据文件 
+### 处理数据文件 
 
-##### 排序数据
+#### 排序数据
 
 ```bash
 # sort命令按照会话指定的默认语言的排序规则对文本文件中的数据行排序
@@ -622,13 +622,13 @@ bin:x:1:1:bin:/bin:/sbin/nologin
 
 # 查看占用空间
 $ du -sh * | sort -nr 
-1008k   mrtg-2.9.29.tar.gz 
+1008k  mrtg-2.9.29.tar.gz 
 972k    bldg1 
 888k    fbs2.pdf 
 
 ```
 
-##### 搜索数据
+#### 搜索数据
 
 ```bash
 # grep 命令会在输入或指定的文件中查找包含匹配指定模式的字符的行。 grep 的输出就是包含了匹配模式的行
@@ -646,21 +646,21 @@ $ grep -e t -e f file1
 
 ```
 
-##### 压缩数据 
+#### 压缩数据 
 
-######1. 压缩文件
+#####1. 压缩文件
 
 ```bash
 gzip file_name
 ```
 
-######2.解压文件
+#####2.解压文件
 
 ```bash
 gunzip file_name
 ```
 
-##### 归档数据 
+#### 归档数据 
 
 ```bash
 tar function [options] object1 object2 ... 
@@ -682,14 +682,14 @@ tar function [options] object1 object2 ...
 -z  将输出重定向给gzip命令来压缩内容 
 ```
 
-###### 1.归档文件
+##### 1.归档文件
 
 ```bash
 # 文件名以.tgz/.tar.gz结尾 代表是gzip压缩过的tar文件
 tar -zcvf dest.tar.gz file1 dir1
 ```
 
-###### 2.列出文件
+#####2.列出文件
 
 ```bash
 tar -tf test.tar.gz
@@ -701,9 +701,9 @@ tar -tf test.tar.gz
 tar -zxvf test.tar.gz
 ```
 
-### 3.理解shell 
+## 3.理解shell 
 
-#### shell 的父子关系
+### shell 的父子关系
 
 用于登录某个虚拟控制器终端或在GUI中运行终端仿真器时所启动的默认的交互shell，是一个父shell
 
@@ -712,16 +712,16 @@ tar -zxvf test.tar.gz
 ```bash
 $ ps -f 
 UID        PID  PPID  C STIME TTY          TIME CMD 
-501       1841  1840  0 11:50 pts/0    00:00:00 -bash 
-501       2429  1841  4 13:44 pts/0    00:00:00 ps -f 
+501      1841  1840  0 11:50 pts/0    00:00:00 -bash 
+501      2429  1841  4 13:44 pts/0    00:00:00 ps -f 
 $ 
 $ bash 
 $ 
 $ ps -f 
 UID        PID  PPID  C STIME TTY          TIME CMD 
-501       1841  1840  0 11:50 pts/0    00:00:00 -bash 
-501       2430  1841  0 13:44 pts/0    00:00:00 bash 
-501       2444  2430  1 13:44 pts/0    00:00:00 ps -f 
+501      1841  1840  0 11:50 pts/0    00:00:00 -bash 
+501      2430  1841  0 13:44 pts/0    00:00:00 bash 
+501      2444  2430  1 13:44 pts/0    00:00:00 ps -f 
 $ 
 # 第一个bash shell程序，也就是父shell进程，其原始进程ID是 1814 。第二个bash shell程序，即子shell进程，其PID是 2430 。注意，子shell的父进程ID（PPID）是 1841 ，指明了这个父shell进程就是该子shell的父进程
 
@@ -733,29 +733,29 @@ $
 -s  从标准输入中读取命令 
 ```
 
-##### 查看父子进程之间的关系
+#### 查看父子进程之间的关系
 
 ```bash
 ps -elf --forest
 ```
 
-##### 退出shell
+#### 退出shell
 
 ```bash
 exit
 ```
 
-#### 进程列表 
+### 进程列表 
 
 进程列表 生成一个子shell来执行对应的命令
 
 ```bash
 $ pwd ; ls ; cd /etc ; pwd ; cd ; pwd ; ls ; echo $BASH_SUBSHELL 
-Documents  junk.dat   Pictures  Templates 
+Documents  junk.dat  Pictures  Templates 
 0 
 # 在命令输出的最后，显示的是数字 0 。这就表明这些命令不是在子shell中运行的
 $ (pwd ; ls ; cd /etc ; pwd ; cd ; pwd ; ls ; echo $BASH_SUBSHELL) 
-Documents  junk.dat   Pictures  Templates 
+Documents  junk.dat  Pictures  Templates 
 1 
 # 这次在命令输入的最后显示出了数字 1 。这表明的确创建了子shell，并用于执行这些命令。 所以说，命令列表就是使用括号包围起来的一组命令，它能够创建出子shell来执行这些命令
 
@@ -764,9 +764,9 @@ Documents  junk.dat   Pictures  Templates
 # echo $BASH_SUBSHELL 。如果该命令返回 0 ，就表明没有子shell。如果返回1 或者其他更大的数字，就表明存在子shell
 ```
 
-#### 别出心裁的子 shell 用法
+### 别出心裁的子 shell 用法
 
-##### 后台作业(background job)
+#### 后台作业(background job)
 
 ```bash
 command &
@@ -782,9 +782,9 @@ jobs
 [1]+ Running command
 ```
 
-#### 理解 shell 的内建命令
+### 理解 shell 的内建命令
 
-##### 外部命令
+#### 外部命令
 
 也被称为文件系统命令，是存在于bash shell之外的程序。它们并不是shell程序的一部分。外部命令程序通常位于`/bin`、`/usr/bin`、`/sbin`或`/usr/sbin`中。
 
@@ -807,7 +807,7 @@ christi+  2801  2743  0 17:16 pts/9    00:00:00 ps -f
 # 就算衍生出子进程或是创建了子shell，你仍然可以通过发送信号与其沟通，发送信号（signaling）使得进程间可以通过信号进行通信
 ```
 
-##### 内建命令
+#### 内建命令
 
 内建命令和外部命令的区别在于前者不需要使用子进程来执行。它们已经和shell编译成了一体，作为shell工具的组成部分存在。不需要借助外部程序文件来运行。
 
@@ -844,7 +844,7 @@ $
 
 命令 type -a 显示出了每个命令的两种实现。注意， which 命令只显示出了外部命令文件。
 
-###### 1.history命令
+##### 1.history命令
 
 ```bash
 # 查看最近用过的命令列表
@@ -857,7 +857,7 @@ $ history -a #强制将命令历史记录提前写入写入
 $ history -n #更新终端会话的历史记录
 ```
 
-###### 2. 命令别名
+#####2. 命令别名
 
 alias 命令是另一个shell的内建命令。命令别名允许你为常用的命令（及其参数）创建另一个名称，从而将输入量减少到最低。 
 
@@ -869,6 +869,6 @@ alias -p
 alias li='ls -li'
 ```
 
-#### 参考书目
+## 参考书目
 
 《Linux命令行与shell脚本编程大全》第3版

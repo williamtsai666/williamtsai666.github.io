@@ -1,14 +1,15 @@
 ---
-title: Thymeleaf3 学习 
+title: Thymeleaf 3 学习
 date: 2017-11-28 16:43:57
 tags:
 ---
 
-### 1.介绍
+
+## 1.介绍
 
 Thymeleaf (麝香草叶子), **/ˈtaɪmˌlɪːf/** 是一个服务端java模板引擎框架,它能够处理多种数据格式，包括HTML, XML, JavaScript, CSS以及普通文本。
 
-### 2.简单的示例
+## 2.简单的示例
 
 ```html
 <!DOCTYPE html>
@@ -29,7 +30,7 @@ Thymeleaf (麝香草叶子), **/ˈtaɪmˌlɪːf/** 是一个服务端java模板�
 
 Thymeleaf使用`th:*` 给现有HTML标签增加属性,因此直接打开模板也能预览效果,很方便 。使用时首先需要像在jsp中一样，在`html`标签内声明th名称空间，然后就可以使用了。
 
-#### 3.Standard Expression Syntax(标准表达式语法)
+## 3.Standard Expression Syntax(标准表达式语法)
 
 - Variable Expressions(变量表达式): `${...}`
 - Selection Variable Expressions(选择变量表达式): `*{...}`
@@ -37,7 +38,7 @@ Thymeleaf使用`th:*` 给现有HTML标签增加属性,因此直接打开模板�
 - Link URL Expressions(链接url表达式): `@{...}`
 - Fragment Expressions(代码片段表达式): `~{...}`
 
-##### (1).Messages (信息)
+### (1).Messages (信息)
 
 该表达书主要为了实现i18n国际化，需要将多语言的文本放在`/WEB-INF/templates`目录下，如下
 
@@ -70,7 +71,7 @@ home.welcome=hello, {0}!
 </p>
 ```
 
-##### (2).Variables(变量)
+###(2).Variables(变量)
 
 Thymeleaf的 ${...}是OGNL (Object-Graph Navigation Language) expressions 语法格式，跟jsp中使用方法差不多,使用示例
 
@@ -106,7 +107,7 @@ ${person.createCompleteName()}
 ${person.createCompleteNameWithSeparator('-')}
 ```
 
-######  表达式基本对象(Expression Basic Objects)，#开始
+####  表达式基本对象(Expression Basic Objects)，#开始
 
 - `#ctx`: the context object. 
 
@@ -122,7 +123,7 @@ ${person.createCompleteNameWithSeparator('-')}
 
 - `#servletContext`: (only in Web Contexts) the `ServletContext` object.
 
-####### 表达式工具对象
+##### 表达式工具对象
 
 - `#execInfo`: information about the template being processed. 
 - `#messages`: methods for obtaining externalized messages inside variables expressions, in the same way as they would be obtained using #{…} syntax.
@@ -148,7 +149,7 @@ ${person.createCompleteNameWithSeparator('-')}
 </p>
 ```
 
-#### (3).Expressions on selections (asterisk syntax)(选择表达式 - 星号语法)
+### (3).Expressions on selections (asterisk syntax)(选择表达式 - 星号语法)
 
 ```html
 <div th:object="${session.user}">
@@ -180,7 +181,7 @@ ${person.createCompleteNameWithSeparator('-')}
 
 `th:object`定义选择的对象,在标签内使用`*{...}`来取出对象中相应的数据，如果没有选择的对象直接使用`*{...}`等价于`#{...}`
 
-#### (4).Link URLs(链接URL)
+###(4).Link URLs(链接URL)
 
 ```html
 <!-- Will produce 'http://localhost:8080/gtvg/order/details?orderId=3' (plus rewriting) -->
@@ -194,7 +195,7 @@ ${person.createCompleteNameWithSeparator('-')}
 <a href="details.html" th:href="@{/order/{orderId}/details(orderId=${o.id})}">view</a>
 ```
 
-####  (5).Literals(文本)
+### (5).Literals(文本)
 
 ```html
 <!-- 基本的使用-->
@@ -221,14 +222,14 @@ ${person.createCompleteNameWithSeparator('-')}
     
 ```
 
-#### (6).Arithmetic operations(算术操作)
+### (6).Arithmetic operations(算术操作)
 
 ```html
 <!-- 也可以使用文本 div (/), mod (%).-->
 <div th:with="isEven=(${prodStat.count} % 2 == 0)">
 ```
 
-#### (7).Comparators and Equality(比较)
+### (7).Comparators and Equality(比较)
 
 html起止标签的缘故，大于，小于等需要使用转义
 
@@ -239,7 +240,7 @@ html起止标签的缘故，大于，小于等需要使用转义
 <span th:text="'Execution mode is ' + ( (${execMode} == 'dev')? 'Development' : 'Production')" 
 ```
 
-####  (8).Conditional expressions(条件表达式)
+###  (8).Conditional expressions(条件表达式)
 
 ```html
 <!--C中的三元运算符 -->
@@ -251,7 +252,7 @@ html起止标签的缘故，大于，小于等需要使用转义
 </tr>
 ```
 
-#### (9). Default expressions (Elvis operator) 默认表达式 
+### (9). Default expressions (Elvis operator) 默认表达式 
 
 ```html
 <div th:object="${session.user}">
@@ -261,7 +262,7 @@ html起止标签的缘故，大于，小于等需要使用转义
 <p>Age: <span th:text="*{age != null}? *{age} : '(no age specified)'">27</span>.</p>
 ```
 
-#### (10). The No-Operation token(空操作符)
+### (10). The No-Operation token(空操作符)
 
 空操作符( No-Operation token)使用下划线表示`_`，它允许原生页面定义的文本为默认值,便于模板的设计
 
@@ -270,7 +271,7 @@ html起止标签的缘故，大于，小于等需要使用转义
 <span th:text="${user.name} ?: _">no user authenticated</span>
 ```
 
-#### (11). Data Conversion / Formatting (数据转换/格式化)
+### (11). Data Conversion / Formatting (数据转换/格式化)
 
 Thymeleaf 定义了双花括号语法用于变量`${...}`和选择表达式`*{...}`
 
@@ -278,7 +279,7 @@ Thymeleaf 定义了双花括号语法用于变量`${...}`和选择表达式`*{..
 <td th:text="${{user.lastAccessDate}}">...</td>
 ```
 
-###  4.Iteration(遍历)
+##  4.Iteration(遍历)
 
 ```html
 <table>
@@ -295,7 +296,7 @@ Thymeleaf 定义了双花括号语法用于变量`${...}`和选择表达式`*{..
 </table>
 ```
 
-###### th:each说明
+### th:each说明
 
 `prod`保存每次遍历的对象，`iterStat`保存遍历的相关信息
 
@@ -307,7 +308,7 @@ Thymeleaf 定义了双花括号语法用于变量`${...}`和选择表达式`*{..
 - Whether the current iteration is the first one. This is the `first` boolean property. 是否是遍历第一个
 - Whether the current iteration is the last one. This is the `last` boolean property. 是否是遍历最后一个
 
-###### 被遍历的对象类型
+### 被遍历的对象类型
 
 - Any object implementing `java.util.Iterable`
 - Any object implementing `java.util.Enumeration`.
@@ -316,9 +317,9 @@ Thymeleaf 定义了双花括号语法用于变量`${...}`和选择表达式`*{..
 - Any array.
 - Any other object will be treated as if it were a single-valued list containing the object itself.
 
-### 5.Conditional Evaluation(条件表达式)
+## 5.Conditional Evaluation(条件表达式)
 
-#### if和unless语句
+### if和unless语句
 
 ```html
 <!-- 如果if表达式成立则显示该标签-->
@@ -332,7 +333,7 @@ Thymeleaf 定义了双花括号语法用于变量`${...}`和选择表达式`*{..
   th:unless="${#lists.isEmpty(prod.comments)}">view</a>
 ```
 
-###### if遵循的规则
+#### if遵循的规则
 
 - If value is not null:
   - If value is a boolean and is `true`.
@@ -341,7 +342,7 @@ Thymeleaf 定义了双花括号语法用于变量`${...}`和选择表达式`*{..
   - If value is a String and is not “false”, “off” or “no”
   - If value is not a boolean, a number, a character or a String.
 - (If value is null, th:if will evaluate to false).
-#### switch/case语句
+### switch/case语句
 
 ```html
 <div th:switch="${user.role}">
@@ -351,7 +352,7 @@ Thymeleaf 定义了双花括号语法用于变量`${...}`和选择表达式`*{..
 </div>
 ```
 
-### 6.Template Layout (模板布局)
+## 6.Template Layout (模板布局)
 
 使用`th:fragment`定义需要复用的代码片段，`th:insert`或`th:replac`引用片段
 
@@ -387,7 +388,7 @@ Thymeleaf 定义了双花括号语法用于变量`${...}`和选择表达式`*{..
 <div th:insert="~{footer :: #copy-section}"></div>
 ```
 
-#### `th:insert` , `th:replace` ,`th:include`
+##### `th:insert` , `th:replace` ,`th:include`
 
 - `th:insert` is the simplest: it will simply insert the specified fragment as the body of its host tag. (在定义的标签体内引用代码片段)
 
@@ -395,7 +396,7 @@ Thymeleaf 定义了双花括号语法用于变量`${...}`和选择表达式`*{..
 
 - `th:include` is similar to `th:insert`, but instead of inserting the fragment it only inserts the *contents* of this fragment.(Thymeleaf 3.0后不推荐使用)
 
-  #### 参数化方式引用代码片段(Parameterizable fragment signatures)
+  ##### 参数化方式引用代码片段(Parameterizable fragment signatures)
 
   ```html
   <!--定义参数化代码片段-->
@@ -411,7 +412,7 @@ Thymeleaf 定义了双花括号语法用于变量`${...}`和选择表达式`*{..
 
 
 
-### 7.Local Variables(局部变量)
+## 7.Local Variables(局部变量)
 
 ```html
 <!-- 使用th:with定义,可以再标签体中使用-->
@@ -425,7 +426,7 @@ Thymeleaf 定义了双花括号语法用于变量`${...}`和选择表达式`*{..
 
 
 
-### 8.参考资料 
+## 8.参考资料 
 
 1.Thymleaf Document(http://www.thymeleaf.org/documentation.html)
 
