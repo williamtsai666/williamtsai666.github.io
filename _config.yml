@@ -4,8 +4,8 @@
 
 # Site
 title: Canon's Blog
-subtitle: Android Developer
-description: Java,Android Blogg
+subtitle: 代码改变生活
+description: Java,Android Blog
 author: technonac
 language: zh-CN
 timezone: Asia/Shanghai
@@ -23,7 +23,7 @@ permalink_defaults:
 SEOTitle: Canon的博客 | Canon's Blog
 header-img: img/home-bg.jpg
 email: 
-keyword: ""
+keyword: "Java"
 
 
 # SNS settings
@@ -50,10 +50,10 @@ duoshuo_share: false                     # set to false if you want to use Comme
 
 # Analytics settings
 # Baidu Analytics
-ba_track_id: 
+ba_track_id: 99f21b353655df817afcb7d4d21a0688
 # Google Analytics
-ga_track_id:             # Format: UA-xxxxxx-xx
-ga_domain: 
+ga_track_id: 'UA-114131858-1'
+ga_domain: technonac.github.io 
 
 
 # Sidebar settings
