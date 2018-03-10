@@ -17,74 +17,11 @@ root: /
 permalink: :year/:month/:day/:title/
 permalink_defaults:
 
-#Custom Setting Start
-
-# Site settings
-SEOTitle: Canon的博客 | Canon's Blog
-header-img: img/home-bg.jpg
-email: 
-keyword: "Java"
-
-
-# SNS settings
-# RSS: false
-weibo_username:     
-zhihu_username:     
-github_username:    
-twitter_username:   
-facebook_username:  
-linkedin_username:  
-
-# Build settings
-anchorjs: true                          # if you want to customize anchor. check out line:181 of `post.html`
-
-
-# Disqus settings
-disqus_username: technonacgithub
-
-# Duoshuo settings
-# duoshuo_username: kaijun
-# Share component is depend on Comment so we can NOT use share only.
-duoshuo_share: false                     # set to false if you want to use Comment without Sharing
-
-
-# Analytics settings
-# Baidu Analytics
-ba_track_id: 99f21b353655df817afcb7d4d21a0688
-# Google Analytics
-ga_track_id: 'UA-114131858-1'
-ga_domain: technonac.github.io 
-
-
-# Sidebar settings
-sidebar: false                           # whether or not using Sidebar.
-sidebar-about-description: "代码改变生活"
-sidebar-avatar: img/avatar.jpg      # use absolute URL, seeing it's used in both `/` and `/about/`
-
-
-# Featured Tags
-featured-tags: false                     # whether or not using Feature-Tags
-featured-condition-size: 1              # A tag will be featured if the size of it is more than this condition value
-
-
-# Friends
-friends: [
-    {
-        title: "github",
-        href: "http://github.com"
-    },
-]
-
-
-#Custom Setting End
-
-
-
 # Directory
 source_dir: source
 public_dir: public
 tag_dir: tags
-archive_dir: i_dont_wanna_use_default_archives
+archive_dir: archives
 category_dir: categories
 code_dir: downloads/code
 i18n_dir: :lang
@@ -103,9 +40,9 @@ future: true
 highlight:
   enable: true
   line_number: true
-  auto_detect: true
+  auto_detect: false
   tab_replace:
-
+  
 # Home page setting
 # path: Root path for your blogs index page. (default = '')
 # per_page: Posts displayed per page. (0 = disable pagination)
@@ -135,7 +72,7 @@ pagination_dir: page
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: huxblog
+theme: freemind
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html

@@ -1,6 +1,7 @@
 ---
 title: shell脚本(6)创建函数
 date: 2018-02-24 23:33:50
+toc: true
 tags: 
     - Linux
     - Shell

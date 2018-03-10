@@ -1,6 +1,7 @@
 ---
 title: Linux命令行(4)软件包管理系统(PMS)
 date: 2018-02-17 23:33:50
+toc: true
 tags: 
     - Linux
     - Shell

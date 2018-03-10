@@ -1,6 +1,7 @@
 ---
 title: Linux命令行(2)Linux环境变量
 date: 2018-02-15 23:33:50
+toc: true
 tags: 
     - Linux
     - Shell

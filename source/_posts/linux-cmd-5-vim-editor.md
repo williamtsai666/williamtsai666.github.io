@@ -1,6 +1,7 @@
 ---
 title: Linux命令行(5)vim编辑器
 date: 2018-02-18 23:33:50
+toc: true
 tags: 
     - Linux
     - Shell

@@ -1,6 +1,7 @@
 ---
 title: Linux命令行(3)理解Linux文件权限
 date: 2018-02-16 23:33:50
+toc: true
 tags: 
     - Linux
     - Shell

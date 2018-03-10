@@ -1,6 +1,5 @@
 ---
-layout: "tags"
-title: "Tags"
-description: "Hey, this is Tags."
-header-img: "img/tag-bg.jpg"
+title: tags
+layout: tags
+date: 2018-03-10 11:27:45
 ---

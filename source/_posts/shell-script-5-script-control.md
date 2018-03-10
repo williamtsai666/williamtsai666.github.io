@@ -1,6 +1,7 @@
 ---
 title: shell脚本(5)控制脚本
 date: 2018-02-23 23:33:50
+toc: true
 tags: 
     - Linux
     - Shell

@@ -1,6 +1,7 @@
 ---
 title: shell脚本(3)处理用户输入
 date: 2018-02-21 23:33:50
+toc: true
 tags: 
     - Linux
     - Shell

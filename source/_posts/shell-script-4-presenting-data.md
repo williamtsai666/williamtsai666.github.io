@@ -1,6 +1,7 @@
 ---
 title: shell脚本(4)呈现数据
 date: 2018-02-22 23:33:50
+toc: true
 tags: 
     - Linux
     - Shell

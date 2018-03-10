@@ -1,6 +1,7 @@
 ---
 title: shell脚本(2)结构化命令
 date: 2018-02-20 23:33:50
+toc: true
 tags: 
     - Linux
     - Shell

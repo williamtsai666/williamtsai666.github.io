@@ -1,6 +1,7 @@
 ---
 title: shell学习(1)构建基本脚本
 date: 2018-02-19 23:33:50
+toc: true
 tags: 
     - Linux
     - Shell
