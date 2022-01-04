@@ -105,3 +105,6 @@ deploy:
   type: 'git'
   repo: git@github.com:technonac/technonac.github.io.git
   branch: master
+  name: technonac
+  email: technonac@gmail.com
+
