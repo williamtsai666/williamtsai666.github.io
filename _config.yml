@@ -7,13 +7,13 @@ title: 夏夜的博客
 subtitle: '代码改变生活'
 description: 'Java,Android Blog'
 keywords:
-author: williamtsai666
+author: wtsai92
 language: zh-CN
 timezone: 'Asia/Shanghai'
 
 # URL
 ## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
-url: https://williamtsai666.github.io
+url: https://wtsai92.github.io
 permalink: :year/:month/:day/:title/
 permalink_defaults:
 pretty_urls:
@@ -103,8 +103,8 @@ theme: fluid
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
   type: 'git'
-  repo: git@github.com:williamtsai666/williamtsai666.github.io.git
+  repo: git@github.com:wtsai92/wtsai92.github.io.git
   branch: master
-  name: williamtsai666
+  name: wtsai92
   email: technonac@gmail.com
 
