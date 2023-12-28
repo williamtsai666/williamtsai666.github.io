@@ -1,0 +1,787 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.ico">
+  <link rel="icon" href="/img/favicon.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wtsai92">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="理解输入和输出目前有两种显示脚本输出的方法： 1.在显示器屏幕上显示输出 2.将输出重定向到文件中  标准文件描述符Linux系统将每个对象当作文件处理。这包括输入和输出进程。Linux用文件描述符(file  descriptor)来标识每个文件对象。文件描述符是一个非负整数，可以唯一标识会话中打开的文件。每个进程一次最多可以有九个文件描述符。出于特殊目的，bash shell保留了前三个文件描">
+<meta property="og:type" content="article">
+<meta property="og:title" content="shell脚本(4)呈现数据">
+<meta property="og:url" content="https://wtsai92.github.io/2018/02/22/shell-script-4-presenting-data/index.html">
+<meta property="og:site_name" content="夏夜的博客">
+<meta property="og:description" content="理解输入和输出目前有两种显示脚本输出的方法： 1.在显示器屏幕上显示输出 2.将输出重定向到文件中  标准文件描述符Linux系统将每个对象当作文件处理。这包括输入和输出进程。Linux用文件描述符(file  descriptor)来标识每个文件对象。文件描述符是一个非负整数，可以唯一标识会话中打开的文件。每个进程一次最多可以有九个文件描述符。出于特殊目的，bash shell保留了前三个文件描">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-02-22T15:33:50.000Z">
+<meta property="article:modified_time" content="2023-12-28T08:47:05.829Z">
+<meta property="article:author" content="wtsai92">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="Shell">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>shell脚本(4)呈现数据 - 夏夜的博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"wtsai92.github.io","root":"/","version":"1.9.5","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>夏夜的博客</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/reading/">
+                <i class="iconfont icon-books"></i>
+                <span>读书</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/night-sky.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="shell脚本(4)呈现数据"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2018-02-22 23:33" pubdate>
+          2018年2月22日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          8.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          71 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">shell脚本(4)呈现数据</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="理解输入和输出"><a href="#理解输入和输出" class="headerlink" title="理解输入和输出"></a>理解输入和输出</h2><p>目前有两种显示脚本输出的方法： 1.在显示器屏幕上显示输出 2.将输出重定向到文件中 </p>
+<h3 id="标准文件描述符"><a href="#标准文件描述符" class="headerlink" title="标准文件描述符"></a>标准文件描述符</h3><p>Linux系统将每个对象当作文件处理。这包括输入和输出进程。Linux用文件描述符(file  descriptor)来标识每个文件对象。文件描述符是一个非负整数，可以唯一标识会话中打开的文件。每个进程一次最多可以有九个文件描述符。出于特殊目的，bash shell保留了前三个文件描述符（ 0 、 1 和 2 ）</p>
+<p> Linux的标准文件描述符</p>
+<table>
+<thead>
+<tr>
+<th>文件描述符</th>
+<th>缩 写</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0</td>
+<td>STDIN</td>
+<td>标准输入</td>
+</tr>
+<tr>
+<td>1</td>
+<td>STDOUT</td>
+<td>标准输出</td>
+</tr>
+<tr>
+<td>2</td>
+<td>STDERR</td>
+<td>标准错误</td>
+</tr>
+</tbody></table>
+<h4 id="1-STDIN"><a href="#1-STDIN" class="headerlink" title="1.STDIN"></a>1.STDIN</h4><p><code>STDIN</code>文件描述符代表shell的标准输入。对终端界面来说，标准输入是键盘。shell从<code> STDIN</code>文件描述符对应的键盘获得输入，在用户输入时处理每个字符。</p>
+<p>在使用输入重定向符号（ &lt; ）时，Linux会用重定向指定的文件来替换标准输入文件描述符,许多bash命令能接受 STDIN 的输入，尤其是没有在命令行上指定文件的话</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 当在命令行上只输入cat命令时，它会从STDIN接受输入。输入一行，cat命令就会显示出一行。</span><br>$ <span class="hljs-built_in">cat</span> <br>this is a <span class="hljs-built_in">test</span> <br>this is a <span class="hljs-built_in">test</span><br><span class="hljs-comment"># 重定向 用testfile文件中的行作为输入</span><br>$ <span class="hljs-built_in">cat</span> &lt; testfile <br></code></pre></td></tr></table></figure>
+
+<h4 id="2-STDOUT"><a href="#2-STDOUT" class="headerlink" title="2.STDOUT"></a>2.STDOUT</h4><p><code>STDOUT</code> 文件描述符代表shell的标准输出。在终端界面上，标准输出就是终端显示器。shell的所有输出（包括shell中运行的程序和脚本）会被定向到标准输出中，也就是显示器。默认情况下，大多数bash命令会将输出导向 <code>STDOUT </code>文件描述符</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 输出重定向</span><br>$ <span class="hljs-built_in">ls</span> -l &gt; test2 <br><span class="hljs-comment"># 输出追加</span><br>$ <span class="hljs-built_in">who</span> &gt;&gt; test2 <br><span class="hljs-comment"># 输出错误时</span><br>$ <span class="hljs-built_in">ls</span> -al badfile &gt; test3 <br><span class="hljs-built_in">ls</span>: cannot access badfile: No such file or directory <br>$ <span class="hljs-built_in">cat</span> test3 <br>$ <br><br>当命令生成错误消息时，shell并未将错误消息重定向到输出重定向文件。shell创建了输出重定向文件，但错误消息却显示在了显示器屏幕上。注意，在显示test3文件的内容时并没有任何错误。test3文件创建成功了，只是里面是空的。 <br>shell对于错误消息的处理是跟普通输出分开的。如果你创建了在后台模式下运行的shell脚本，通常你必须依赖发送到日志文件的输出消息。用这种方法的话，如果出现了错误信息，这些信息是不会出现在日志文件中的。<br></code></pre></td></tr></table></figure>
+
+<h4 id="3-STDERR"><a href="#3-STDERR" class="headerlink" title="3.STDERR"></a>3.STDERR</h4><p>shell通过特殊的 <code>STDERR</code> 文件描述符来处理错误消息。<code>STDERR</code>文件描述符代表shell的标准错误输出。shell或shell中运行的程序和脚本出错时生成的错误消息都会发送到这个位置。 默认情况下， <code>STDERR </code>文件描述符会和 <code>STDOUT </code>文件描述符指向同样的地方。也就是说，默认情况下，错误消息也会输出到显示器输出中。</p>
+<h3 id="重定向错误"><a href="#重定向错误" class="headerlink" title="重定向错误"></a>重定向错误</h3><h4 id="1-只重定向错误"><a href="#1-只重定向错误" class="headerlink" title="1.只重定向错误"></a>1.只重定向错误</h4><p><code>STDERR</code>文件描述符被设成 2 。可以选择只重定向错误消息，将该文件描述符值放在重定向符号前。该值必须紧紧地放在重定向符号前，否则不会工作。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">ls</span> -al badfile 2&gt; test4 <br>$ <span class="hljs-built_in">cat</span> test4 <br><span class="hljs-built_in">ls</span>: cannot access badfile: No such file or directory <br>$ <br><span class="hljs-comment"># 只有错误消息被重定向到文件</span><br>$ <span class="hljs-built_in">ls</span> -al <span class="hljs-built_in">test</span> badtest test2 2&gt; test5 <br>-rw-rw-r-- 1 rich rich 158 2014-10-16 11:32 test2 <br>$ <span class="hljs-built_in">cat</span> test5 <br><span class="hljs-built_in">ls</span>: cannot access <span class="hljs-built_in">test</span>: No such file or directory <br><span class="hljs-built_in">ls</span>: cannot access badtest: No such file or directory <br>$ <br></code></pre></td></tr></table></figure>
+
+<h4 id="2-重定向错误和数据"><a href="#2-重定向错误和数据" class="headerlink" title="2. 重定向错误和数据"></a>2. 重定向错误和数据</h4><p>如果想重定向错误和正常输出，必须用两个重定向符号。需要在符号前面放上待重定向数据所对应的文件描述符，然后指向用于保存数据的输出文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 正常输出STDOUT 重定向到test7文件</span><br><span class="hljs-comment"># 错误消息STDERR 重定向到test6文件</span><br>$ <span class="hljs-built_in">ls</span> -al <span class="hljs-built_in">test</span> test2 test3 badtest 2&gt; test6 1&gt; test7 <br>$ <span class="hljs-built_in">cat</span> test6 <br><span class="hljs-built_in">ls</span>: cannot access <span class="hljs-built_in">test</span>: No such file or directory <br><span class="hljs-built_in">ls</span>: cannot access badtest: No such file or directory <br>$ <span class="hljs-built_in">cat</span> test7 <br>-rw-rw-r-- 1 rich rich 158 2014-10-16 11:32 test2 <br>-rw-rw-r-- 1 rich rich   0 2014-10-16 11:33 test3 <br>$ <br><br><span class="hljs-comment"># 将STDERR和STDOUT的输出重定向到同一个输出文件,使用特殊的重定向符号 &amp;&gt;</span><br>$ <span class="hljs-built_in">ls</span> -al <span class="hljs-built_in">test</span> test2 test3 badtest &amp;&gt; test7 <br>$ <span class="hljs-built_in">cat</span> test7 <br><span class="hljs-built_in">ls</span>: cannot access <span class="hljs-built_in">test</span>: No such file or directory <br><span class="hljs-built_in">ls</span>: cannot access badtest: No such file or directory <br>-rw-rw-r-- 1 rich rich 158 2014-10-16 11:32 test2 <br>-rw-rw-r-- 1 rich rich   0 2014-10-16 11:33 test3 <br>$ <br><span class="hljs-comment"># 当使用 &amp;&gt; 符时，命令生成的所有输出都会发送到同一位置，包括数据和错误。</span><br><span class="hljs-comment"># 为了避免错误信息散落在输出文件中，相较于标准输出，bash shell自动赋予了错误消息更高的优先级。</span><br><br></code></pre></td></tr></table></figure>
+
+<h2 id="在脚本中重定向输出"><a href="#在脚本中重定向输出" class="headerlink" title="在脚本中重定向输出"></a>在脚本中重定向输出</h2><h3 id="临时重定向"><a href="#临时重定向" class="headerlink" title="临时重定向"></a>临时重定向</h3><p>如果想在脚本中生成错误消息，可以将单独的一行输出重定向到 STDERR 。使用输出重定向符来将输出信息重定向到 STDERR 文件描述符。在重定向到文件描述符时，你必须在文件描述符数字之前加一个 &amp;</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">cat</span> test8 <br><span class="hljs-comment">#!/bin/bash </span><br><span class="hljs-comment"># testing STDERR messages </span><br> <br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;This is an error&quot;</span> &gt;&amp;2 <br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;This is normal output&quot;</span> <br>$ <br>$ ./test8 <br>This is an error <br>This is normal output <br><span class="hljs-comment"># 默认情况下，Linux会将 STDERR 导向 STDOUT 。所以上面的结果输出正常，但是，如果你在运行脚本时重定向了STDERR ，脚本中所有导向 STDERR 的文本都会被重定向。</span><br><br>$ ./test8 2&gt; test9 <br>This is normal output <br>$ <span class="hljs-built_in">cat</span> test9 <br>This is an error <br>$ <br></code></pre></td></tr></table></figure>
+
+<h3 id="永久重定向"><a href="#永久重定向" class="headerlink" title="永久重定向"></a>永久重定向</h3><p>如果脚本中有大量数据需要重定向，那重定向每个 echo 语句就会很烦琐。可以用 exec 命令告诉shell在脚本执行期间重定向某个特定文件描述符</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">cat</span> test10 <br><span class="hljs-comment">#!/bin/bash </span><br><span class="hljs-comment"># redirecting all output to a file </span><br><span class="hljs-built_in">exec</span> 1&gt;testout <br> <br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;This is a test of redirecting all output&quot;</span> <br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;from a script to another file.&quot;</span> <br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;without having to redirect every individual line&quot;</span> <br>$ ./test10 <br>$ <span class="hljs-built_in">cat</span> testout <br>This is a <span class="hljs-built_in">test</span> of redirecting all output <br>from a script to another file. <br>without having to redirect every individual line <br>$ <br><span class="hljs-comment"># exec 命令会启动一个新shell并将 STDOUT 文件描述符重定向到文件。脚本中发给 STDOUT 的所有输出会被重定向到文件。 </span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 可以在脚本执行过程中重定向 STDOUT</span><br>$ <span class="hljs-built_in">cat</span> test11 <br><span class="hljs-comment">#!/bin/bash </span><br><span class="hljs-comment"># redirecting output to different locations </span><br> <br><span class="hljs-built_in">exec</span> 2&gt;testerror <br> <br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;This is the start of the script&quot;</span> <br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;now redirecting all output to another location&quot;</span> <br> <br><span class="hljs-built_in">exec</span> 1&gt;testout <br> <br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;This output should go to the testout file&quot;</span> <br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;but this should go to the testerror file&quot;</span> &gt;&amp;2 <br>$ <br>$ ./test11 <br>This is the start of the script <br>now redirecting all output to another location <br>$ <span class="hljs-built_in">cat</span> testout <br>This output should go to the testout file <br>$ <span class="hljs-built_in">cat</span> testerror <br>but this should go to the testerror file <br>$ <br><br></code></pre></td></tr></table></figure>
+
+<h2 id="在脚本中重定向输入"><a href="#在脚本中重定向输入" class="headerlink" title="在脚本中重定向输入"></a>在脚本中重定向输入</h2><p>可以使用与脚本中重定向 STDOUT 和 STDERR 相同的方法来将 STDIN 从键盘重定向到其他位置。 exec 命令允许你将 STDIN 重定向到Linux系统上的文件中.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">cat</span> test12 <br><span class="hljs-comment">#!/bin/bash </span><br><span class="hljs-comment"># redirecting file input </span><br><span class="hljs-comment"># 重定向输入，从文件testfile中获得输入，而不是STDIN</span><br><span class="hljs-built_in">exec</span> 0&lt; testfile <br>count=1 <br> <br><span class="hljs-keyword">while</span> <span class="hljs-built_in">read</span> line <br><span class="hljs-keyword">do</span> <br>   <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Line #<span class="hljs-variable">$count</span>: <span class="hljs-variable">$line</span>&quot;</span> <br>   count=$[ <span class="hljs-variable">$count</span> + 1 ] <br><span class="hljs-keyword">done</span> <br>$ ./test12 <br>Line <span class="hljs-comment">#1: This is the first line. </span><br>Line <span class="hljs-comment">#2: This is the second line. </span><br>Line <span class="hljs-comment">#3: This is the third line. </span><br></code></pre></td></tr></table></figure>
+
+<h2 id="创建自己的重定向"><a href="#创建自己的重定向" class="headerlink" title="创建自己的重定向"></a>创建自己的重定向</h2><p>在脚本中重定向输入和输出时，并不局限于这3个默认的文件描述符。在shell中最多可以有9个打开的文件描述符。其他6个从 3 ~ 8 的文件描述符均可用作输入或输出重定向。可以将这些文件描述符中的任意一个分配给文件，然后在脚本中使用它们。</p>
+<h3 id="创建输出文件描述符"><a href="#创建输出文件描述符" class="headerlink" title="创建输出文件描述符"></a>创建输出文件描述符</h3><p>使用 exec 命令来给输出分配文件描述符。和标准的文件描述符一样，一旦将另一个文件描述符分配给一个文件，这个重定向就会一直有效，直到你重新分配。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">cat</span> test13 <br><span class="hljs-comment">#!/bin/bash </span><br><span class="hljs-comment"># using an alternative file descriptor </span><br><span class="hljs-comment"># 将文件描述符3 重定向到另一个文件</span><br><span class="hljs-built_in">exec</span> 3&gt;test13out <br> <br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;This should display on the monitor&quot;</span> <br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;and this should be stored in the file&quot;</span> &gt;&amp;3 <br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Then this should be back on the monitor&quot;</span> <br>$ ./test13 <br>This should display on the monitor <br>Then this should be back on the monitor <br>$ <span class="hljs-built_in">cat</span> test13out <br>and this should be stored <span class="hljs-keyword">in</span> the file <br>$ <br></code></pre></td></tr></table></figure>
+
+<h3 id="重定向文件描述符"><a href="#重定向文件描述符" class="headerlink" title="重定向文件描述符"></a>重定向文件描述符</h3><p>如果要恢复已重定向的文件描述符，你可以分配另外一个文件描述符给标准文件描述符。这意味着你可以将 STDOUT 的原来位置重定向到另一个文件描述符，然后再利用该文件描述符重定向回 STDOUT。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">cat</span> test14 <br><span class="hljs-comment">#!/bin/bash </span><br><span class="hljs-comment"># storing STDOUT, then coming back to it </span><br><span class="hljs-comment"># 将文件描述符 3 重定向到文件描述符1的当前位置，也就是STDOUT。这意味着任何发送给文件描述符3的输出都将出现在显示器上。</span><br><span class="hljs-built_in">exec</span> 3&gt;&amp;1 <br><span class="hljs-comment"># 将STDOUT重定向到文件，shell现在会将发送给STDOUT 的输出直接重定向到输出文件中。但是，文件描述符 3仍然指向STDOUT原来的位置，也就是显示器。如果此时将输出数据发送给文件描述符3，它仍然会出现在显示器上</span><br><span class="hljs-built_in">exec</span> 1&gt;test14out <br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;This should store in the output file&quot;</span> <br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;along with this line.&quot;</span> <br><span class="hljs-comment"># 在向 STDOUT （现在指向一个文件）发送一些输出之后，脚本将 STDOUT 重定向到文件描述符3的当前位置（现在仍然是显示器）。这意味着现在 STDOUT 又指向了它原来的位置：显示器。 </span><br><span class="hljs-built_in">exec</span> 1&gt;&amp;3 <br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Now things should be back to normal&quot;</span> <br>$ <br>$ ./test14 <br>Now things should be back to normal <br>$ <span class="hljs-built_in">cat</span> test14out <br>This should store <span class="hljs-keyword">in</span> the output file <br>along with this line. <br>$ <br></code></pre></td></tr></table></figure>
+
+<h3 id="创建输入文件描述符"><a href="#创建输入文件描述符" class="headerlink" title="创建输入文件描述符"></a>创建输入文件描述符</h3><p>可以用和重定向输出文件描述符同样的办法重定向输入文件描述符。在重定向到文件之前，先将 STDIN 文件描述符保存到另外一个文件描述符，然后在读取完文件之后再将 STDIN 恢复到它原来的位置。 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">cat</span> test15 <br><span class="hljs-comment">#!/bin/bash </span><br><span class="hljs-comment"># redirecting input file descriptors </span><br><br><span class="hljs-comment"># 文件描述符6用来保存 STDIN 的位置</span><br><span class="hljs-built_in">exec</span> 6&lt;&amp;0 <br><span class="hljs-comment"># 将 STDIN 重定向到一个文件,read 命令的所有输入都来自重定向后的 STDIN （也就是输入文件）。</span><br><span class="hljs-built_in">exec</span> 0&lt; testfile <br> <br>count=1 <br><span class="hljs-keyword">while</span> <span class="hljs-built_in">read</span> line <br><span class="hljs-keyword">do</span> <br>   <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Line #<span class="hljs-variable">$count</span>: <span class="hljs-variable">$line</span>&quot;</span> <br>   count=$[ <span class="hljs-variable">$count</span> + 1 ] <br><span class="hljs-keyword">done</span> <br><span class="hljs-comment"># 将 STDIN 重定向到文件描述符 6 ，从而将STDIN恢复到原先的位置。</span><br><span class="hljs-built_in">exec</span> 0&lt;&amp;6 <br><span class="hljs-built_in">read</span> -p <span class="hljs-string">&quot;Are you done now? &quot;</span> answer <br><span class="hljs-keyword">case</span> <span class="hljs-variable">$answer</span> <span class="hljs-keyword">in</span> <br>Y|y) <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Goodbye&quot;</span>;; <br>N|n) <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Sorry, this is the end.&quot;</span>;; <br><span class="hljs-keyword">esac</span> <br>$ ./test15 <br>Line <span class="hljs-comment">#1: This is the first line. </span><br>Line <span class="hljs-comment">#2: This is the second line. </span><br>Line <span class="hljs-comment">#3: This is the third line. </span><br>Are you <span class="hljs-keyword">done</span> now? y <br>Goodbye <br></code></pre></td></tr></table></figure>
+
+<h3 id="关闭文件描述符"><a href="#关闭文件描述符" class="headerlink" title="关闭文件描述符"></a>关闭文件描述符</h3><p>如果你创建了新的输入或输出文件描述符，shell会在脚本退出时自动关闭它们。然而在有些情况下，你需要在脚本结束前手动关闭文件描述符.</p>
+<p>要关闭文件描述符，将它重定向到特殊符号 <code>&amp;-</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 关闭文件描述符 3 ，不再在脚本中使用它</span><br><span class="hljs-built_in">exec</span> 3&gt;&amp;- <br></code></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">cat</span> badtest <br><span class="hljs-comment">#!/bin/bash </span><br><span class="hljs-comment"># testing closing file descriptors </span><br><span class="hljs-built_in">exec</span> 3&gt; test17file <br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;This is a test line of data&quot;</span> &gt;&amp;3 <br><span class="hljs-built_in">exec</span> 3&gt;&amp;- <br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;This won&#x27;t work&quot;</span> &gt;&amp;3 <br>$ ./badtest <br>./badtest: 3: Bad file descriptor <br>$ <br></code></pre></td></tr></table></figure>
+
+<h2 id="列出打开的文件描述符"><a href="#列出打开的文件描述符" class="headerlink" title="列出打开的文件描述符"></a>列出打开的文件描述符</h2><p>lsof 命令会列出整个Linux系统打开的所有文件描述符。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ /usr/sbin/lsof -a -p $$ -d 0,1,2 <br>COMMAND  PID USER   FD   TYPE DEVICE SIZE NODE NAME <br>bash    3344 rich    0u   CHR  136,0         2 /dev/pts/0 <br>bash    3344 rich    1u   CHR  136,0         2 /dev/pts/0 <br>bash    3344 rich    2u   CHR  136,0         2 /dev/pts/0 <br>------------------------------------------------------------------<br>-p 指定进程ID,PID<br>-d 指定要显示的文件描述符编号<br>-a 对两个选项结果进行AND运算<br>$$ 当前pid<br><br><span class="hljs-comment"># lsof的默认输出 </span><br>COMMAND  正在运行的命令名的前9个字符 <br>PID  进程的PID <br>USER  进程属主的登录名 <br>FD  文件描述符号以及访问类型（r代表读，w代表写，u代表读写） <br>TYPE  文件的类型（CHR代表字符型，BLK代表块型，DIR代表目录，REG代表常规文件） <br>DEVICE  设备的设备号（主设备号和从设备号）<br>SIZE  如果有的话，表示文件的大小 <br>NODE  本地文件的节点号 <br>NAME  文件名 <br><br>与STDIN、STDOUT和STDERR关联的文件类型是字符型。因为STDIN、STDOUT和STDERR文件描述符都指向终端，所以输出文件的名称就是终端的设备名。<br></code></pre></td></tr></table></figure>
+
+<h2 id="阻止命令输出"><a href="#阻止命令输出" class="headerlink" title="阻止命令输出"></a>阻止命令输出</h2><p>可以将 <code>STDERR</code> 重定向到一个叫作null文件的特殊文件。null文件里什么都没有。shell输出到null文件的任何数据都不会保存，全部都被丢掉了。<br>在Linux系统上null文件的标准位置是<code>/dev/null</code>。你重定向到该位置的任何数据都会被丢掉，不会显示。 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">ls</span> -al &gt; /dev/null <br>$ <span class="hljs-built_in">cat</span> /dev/null <br>$ <br><span class="hljs-comment"># 避免错误消息</span><br>$ <span class="hljs-built_in">ls</span> -al badfile test16 2&gt; /dev/null <br>-rwxr--r--    1 rich     rich          135 Oct 29 19:57 test16* <br>$ <br><span class="hljs-comment"># 快速清除现有文件的数据,清除日志文件的常用方法</span><br>$ <span class="hljs-built_in">cat</span> /dev/null &gt; testfile <br>$ <span class="hljs-built_in">cat</span> testfile <br>$ 清除日志文件的一个常用方法<br></code></pre></td></tr></table></figure>
+
+<h2 id="创建临时文件"><a href="#创建临时文件" class="headerlink" title="创建临时文件"></a>创建临时文件</h2><p>Linux系统有特殊的目录，专供临时文件使用。Linux使用<code>/tmp</code>目录来存放不需要永久保留的文件。大多数Linux发行版配置了系统在启动时自动删除<code>/tmp</code>目录的所有文件。系统上的任何用户账户都有权限在读写<code>/tmp</code>目录中的文件。有个特殊命令可以用来创建临时文件。 <code>mktemp </code>命令可以在<code>/tmp</code>目录中创建一个唯一的临时文件。shell会创建这个文件，但不用默认的<code> umask</code> 值。它会将文件的读和写权限分配给文件的属主，并将你设成文件的属主。</p>
+<h3 id="创建本地临时文件"><a href="#创建本地临时文件" class="headerlink" title="创建本地临时文件"></a>创建本地临时文件</h3><p>默认情况下， <code>mktemp</code> 会在本地目录中创建一个文件。要用 <code>mktemp</code> 命令在本地目录中创建一个临时文件，你需要指定一个文件名模板。模板可以包含任意文本文件名，在文件名末尾加上6个 X </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">mktemp</span> testing.XXXXXX <br>testing.1DRLuV <br><br><span class="hljs-comment"># shell脚本中保存文件名称</span><br>tempfile=$(<span class="hljs-built_in">mktemp</span> test.XXXXXX) <br></code></pre></td></tr></table></figure>
+
+<h3 id="在-tmp-目录创建临时文件"><a href="#在-tmp-目录创建临时文件" class="headerlink" title="在&#x2F;tmp 目录创建临时文件"></a>在&#x2F;tmp 目录创建临时文件</h3><p> <code>mktemp</code> 命令使用<code>-t</code> 选项在系统的临时目录来创建临时文件。创建好后会返回用来创建临时文件的全路径，而不是只有文件名。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">mktemp</span> -t test.XXXXXX <br>/tmp/test.xG3374 <br>$ <span class="hljs-built_in">ls</span> -al /tmp/test* <br>-rw------- 1 rich rich 0 2014-10-29 18:41 /tmp/test.xG3374 <br>$ <br></code></pre></td></tr></table></figure>
+
+<h3 id="创建临时目录"><a href="#创建临时目录" class="headerlink" title="创建临时目录"></a>创建临时目录</h3><p><code>mktemp</code> 命令-d 选项来创建一个临时目录而不是临时文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash">tempdir=$(<span class="hljs-built_in">mktemp</span> -d dir.XXXXXX) <br><span class="hljs-built_in">cd</span> <span class="hljs-variable">$tempdir</span> <br>tempfile1=$(<span class="hljs-built_in">mktemp</span> temp.XXXXXX) <br>tempfile2=$(<span class="hljs-built_in">mktemp</span> temp.XXXXXX) <br></code></pre></td></tr></table></figure>
+
+<h2 id="记录消息-tee"><a href="#记录消息-tee" class="headerlink" title="记录消息 (tee)"></a>记录消息 (tee)</h2><p>如果需要将输出同时发送到显示器和日志文件，只要用特殊的 tee 命令就行。<br>tee 命令相当于管道的一个T型接头。它将从 STDIN 过来的数据同时发往两处。一处是STDOUT ，另一处是 tee 命令行所指定的文件名。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">tee</span> filename<br>-a 将数据追加到文件 <br></code></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 由于tee会重定向来自STDIN的数据，可以用它配合管道命令来重定向命令输出。 </span><br>$ <span class="hljs-built_in">date</span> | <span class="hljs-built_in">tee</span> testfile <br>Sun Oct 19 18:56:21 EDT 2014 <br>$ <span class="hljs-built_in">cat</span> testfile <br>Sun Oct 19 18:56:21 EDT 2014 <br>$ <br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="参考书目"><a href="#参考书目" class="headerlink" title="参考书目"></a>参考书目</h2><p>《Linux命令行与shell脚本编程大全》第3版</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Linux/" class="print-no-link">#Linux</a>
+      
+        <a href="/tags/Shell/" class="print-no-link">#Shell</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>shell脚本(4)呈现数据</div>
+      <div>https://wtsai92.github.io/2018/02/22/shell-script-4-presenting-data/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>wtsai92</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2018年2月22日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2018/02/23/shell-script-5-script-control/" title="shell脚本(5)控制脚本">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">shell脚本(5)控制脚本</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2018/02/21/shell-script-3-user-input/" title="shell脚本(3)处理用户输入">
+                        <span class="hidden-mobile">shell脚本(3)处理用户输入</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div class="disqus" style="width:100%">
+    <div id="disqus_thread"></div>
+    
+      <script type="text/javascript">
+        var disqus_config = function() {
+          this.page.url = 'https://wtsai92.github.io/2018/02/22/shell-script-4-presenting-data/';
+          this.page.identifier = '/2018/02/22/shell-script-4-presenting-data/';
+        };
+        Fluid.utils.loadComments('#disqus_thread', function() {
+          var d = document, s = d.createElement('script');
+          s.src = '//' + 'technonacgithub' + '.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', new Date());
+          (d.head || d.body).appendChild(s);
+        });
+      </script>
+    
+    <noscript>Please enable JavaScript to view the comments</noscript>
+  </div>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

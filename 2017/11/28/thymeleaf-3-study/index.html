@@ -1,0 +1,822 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.ico">
+  <link rel="icon" href="/img/favicon.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wtsai92">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="1.介绍Thymeleaf (麝香草叶子), &#x2F;ˈtaɪmˌlɪːf&#x2F; 是一个服务端java模板引擎框架,它能够处理多种数据格式，包括HTML, XML, JavaScript, CSS以及普通文本。 2.简单的示例1234567891011121314&lt;!DOCTYPE html&gt;&lt;!--声明 th 名称空间--&gt;&lt;html xmlns:th&#x3D;&amp;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Thymeleaf 3 学习">
+<meta property="og:url" content="https://wtsai92.github.io/2017/11/28/thymeleaf-3-study/index.html">
+<meta property="og:site_name" content="夏夜的博客">
+<meta property="og:description" content="1.介绍Thymeleaf (麝香草叶子), &#x2F;ˈtaɪmˌlɪːf&#x2F; 是一个服务端java模板引擎框架,它能够处理多种数据格式，包括HTML, XML, JavaScript, CSS以及普通文本。 2.简单的示例1234567891011121314&lt;!DOCTYPE html&gt;&lt;!--声明 th 名称空间--&gt;&lt;html xmlns:th&#x3D;&amp;">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-11-28T08:43:57.000Z">
+<meta property="article:modified_time" content="2023-12-28T08:47:05.829Z">
+<meta property="article:author" content="wtsai92">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>Thymeleaf 3 学习 - 夏夜的博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"wtsai92.github.io","root":"/","version":"1.9.5","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>夏夜的博客</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/reading/">
+                <i class="iconfont icon-books"></i>
+                <span>读书</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/night-sky.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Thymeleaf 3 学习"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2017-11-28 16:43" pubdate>
+          2017年11月28日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          14k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          117 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Thymeleaf 3 学习</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="1-介绍"><a href="#1-介绍" class="headerlink" title="1.介绍"></a>1.介绍</h2><p>Thymeleaf (麝香草叶子), <strong>&#x2F;ˈtaɪmˌlɪːf&#x2F;</strong> 是一个服务端java模板引擎框架,它能够处理多种数据格式，包括HTML, XML, JavaScript, CSS以及普通文本。</p>
+<h2 id="2-简单的示例"><a href="#2-简单的示例" class="headerlink" title="2.简单的示例"></a>2.简单的示例</h2><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">html</span>&gt;</span><br><span class="hljs-comment">&lt;!--声明 th 名称空间--&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">xmlns:th</span>=<span class="hljs-string">&quot;http://www.thymeleaf.org&quot;</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>Good Thymes Virtual Grocery<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">http-equiv</span>=<span class="hljs-string">&quot;Content-Type&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;text/html; charset=UTF-8&quot;</span> /&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">link</span> <span class="hljs-attr">rel</span>=<span class="hljs-string">&quot;stylesheet&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;text/css&quot;</span> <span class="hljs-attr">media</span>=<span class="hljs-string">&quot;all&quot;</span> </span><br><span class="hljs-tag">          <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;../../css/gtvg.css&quot;</span> <span class="hljs-attr">th:href</span>=<span class="hljs-string">&quot;@&#123;/css/gtvg.css&#125;&quot;</span> /&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span><br>    <span class="hljs-comment">&lt;!-- 引用文本--&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">p</span> <span class="hljs-attr">th:text</span>=<span class="hljs-string">&quot;#&#123;home.welcome&#125;&quot;</span>&gt;</span>Welcome to our grocery store!<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>Thymeleaf使用<code>th:*</code> 给现有HTML标签增加属性,因此直接打开模板也能预览效果,很方便 。使用时首先需要像在jsp中一样，在<code>html</code>标签内声明th名称空间，然后就可以使用了。</p>
+<h2 id="3-Standard-Expression-Syntax-标准表达式语法"><a href="#3-Standard-Expression-Syntax-标准表达式语法" class="headerlink" title="3.Standard Expression Syntax(标准表达式语法)"></a>3.Standard Expression Syntax(标准表达式语法)</h2><ul>
+<li>Variable Expressions(变量表达式): <code>$&#123;...&#125;</code></li>
+<li>Selection Variable Expressions(选择变量表达式): <code>*&#123;...&#125;</code></li>
+<li>Message Expressions(消息表达式): <code>#&#123;...&#125;</code></li>
+<li>Link URL Expressions(链接url表达式): <code>@&#123;...&#125;</code></li>
+<li>Fragment Expressions(代码片段表达式): <code>~&#123;...&#125;</code></li>
+</ul>
+<h3 id="1-Messages-信息"><a href="#1-Messages-信息" class="headerlink" title="(1).Messages (信息)"></a>(1).Messages (信息)</h3><p>该表达书主要为了实现i18n国际化，需要将多语言的文本放在<code>/WEB-INF/templates</code>目录下，如下</p>
+<ul>
+<li><code>/WEB-INF/templates/home_en.properties</code> 英文的翻译.</li>
+<li><code>/WEB-INF/templates/home.properties</code> 默认的文本</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-comment">&lt;!--常用使用方法--&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">p</span> <span class="hljs-attr">th:text</span>=<span class="hljs-string">&quot;#&#123;home.welcome&#125;&quot;</span>&gt;</span>Hello World<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span> <br><br><span class="hljs-comment">&lt;!--unescaped text 不转义文本--&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">p</span> <span class="hljs-attr">th:utext</span>=<span class="hljs-string">&quot;#&#123;home.welcome&#125;&quot;</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>也可以传参给文本</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs properties"><span class="hljs-comment">#home.properties文件</span><br><span class="hljs-attr">home.welcome</span>=<span class="hljs-string">hello, &#123;0&#125;!</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-comment">&lt;!-- Thymeleaf解析后会将p标签中的Welcome User!替换为th:text指定的文本 --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">p</span> <span class="hljs-attr">th:text</span>=<span class="hljs-string">&quot;#&#123;home.welcome($&#123;session.user.name&#125;)&#125;&quot;</span>&gt;</span><br>  Welcome User!<br><span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span><br><span class="hljs-comment">&lt;!--消息的key也可以通过动态去获取  --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">p</span> <span class="hljs-attr">th:utext</span>=<span class="hljs-string">&quot;#&#123;$&#123;welcomeMsgKey&#125;($&#123;session.user.name&#125;)&#125;&quot;</span>&gt;</span><br>  Welcome User!<br><span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>###(2).Variables(变量)</p>
+<p>Thymeleaf的 ${…}是OGNL (Object-Graph Navigation Language) expressions 语法格式，跟jsp中使用方法差不多,使用示例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs htm">/*<br>* Access to properties using the point (.). Equivalent to calling property getters.<br>*/<br>$&#123;person.father.name&#125;<br><br>/*<br>* Access to properties can also be made by using brackets ([]) and writing <br>* the name of the property as a variable or between single quotes.<br>*/<br>$&#123;person[&#x27;father&#x27;][&#x27;name&#x27;]&#125;<br><br>/*<br>* If the object is a map, both dot and bracket syntax will be equivalent to <br>* executing a call on its get(...) method.<br>*/<br>$&#123;countriesByCode.ES&#125;<br>$&#123;personsByName[&#x27;Stephen Zucchini&#x27;].age&#125;<br><br>/*<br>* Indexed access to arrays or collections is also performed with brackets, <br>* writing the index without quotes.<br>*/<br>$&#123;personsArray[0].name&#125;<br><br>/*<br>* Methods can be called, even with arguments.<br>*/<br>$&#123;person.createCompleteName()&#125;<br>$&#123;person.createCompleteNameWithSeparator(&#x27;-&#x27;)&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="表达式基本对象-Expression-Basic-Objects-，-开始"><a href="#表达式基本对象-Expression-Basic-Objects-，-开始" class="headerlink" title="表达式基本对象(Expression Basic Objects)，#开始"></a>表达式基本对象(Expression Basic Objects)，#开始</h4><ul>
+<li><p><code>#ctx</code>: the context object. </p>
+</li>
+<li><p><code>#vars:</code> the context variables.</p>
+</li>
+<li><p><code>#locale</code>: the context locale.</p>
+</li>
+<li><p><code>#request</code>: (only in Web Contexts) the <code>HttpServletRequest</code> object.</p>
+</li>
+<li><p><code>#response</code>: (only in Web Contexts) the <code>HttpServletResponse</code> object.</p>
+</li>
+<li><p><code>#session</code>: (only in Web Contexts) the <code>HttpSession</code> object.</p>
+</li>
+<li><p><code>#servletContext</code>: (only in Web Contexts) the <code>ServletContext</code> object.</p>
+</li>
+</ul>
+<h5 id="表达式工具对象"><a href="#表达式工具对象" class="headerlink" title="表达式工具对象"></a>表达式工具对象</h5><ul>
+<li><code>#execInfo</code>: information about the template being processed. </li>
+<li><code>#messages</code>: methods for obtaining externalized messages inside variables expressions, in the same way as they would be obtained using #{…} syntax.</li>
+<li><code>#uris</code>: methods for escaping parts of URLs&#x2F;URIs</li>
+<li><code>#conversions</code>: methods for executing the configured <em>conversion service</em> (if any).</li>
+<li><code>#dates</code>: methods for <code>java.util.Date</code> objects: formatting, component extraction, etc.</li>
+<li><code>#calendars</code>: analogous to <code>#dates</code>, but for <code>java.util.Calendar</code> objects.</li>
+<li><code>#numbers</code>: methods for formatting numeric objects.</li>
+<li><code>#strings</code>: methods for <code>String</code> objects: contains, startsWith, prepending&#x2F;appending, etc.</li>
+<li><code>#objects</code>: methods for objects in general.</li>
+<li><code>#bools</code>: methods for boolean evaluation.</li>
+<li><code>#arrays</code>: methods for arrays.</li>
+<li><code>#lists</code>: methods for lists.</li>
+<li><code>#sets</code>: methods for sets.</li>
+<li><code>#maps</code>: methods for maps.</li>
+<li><code>#aggregates</code>: methods for creating aggregates on arrays or collections.</li>
+<li><code>#ids</code>: methods for dealing with id attributes that might be repeated (for example, as a result of an iteration).</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-comment">&lt;!--表达式工具对象的使用--&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span><br>  Today is: <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">th:text</span>=<span class="hljs-string">&quot;$&#123;#calendars.format(today,&#x27;dd MMMM yyyy&#x27;)&#125;&quot;</span>&gt;</span>13 May 2011<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="3-Expressions-on-selections-asterisk-syntax-选择表达式-星号语法"><a href="#3-Expressions-on-selections-asterisk-syntax-选择表达式-星号语法" class="headerlink" title="(3).Expressions on selections (asterisk syntax)(选择表达式 - 星号语法)"></a>(3).Expressions on selections (asterisk syntax)(选择表达式 - 星号语法)</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">th:object</span>=<span class="hljs-string">&quot;$&#123;session.user&#125;&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Name: <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">th:text</span>=<span class="hljs-string">&quot;*&#123;firstName&#125;&quot;</span>&gt;</span>Sebastian<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>.<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Surname: <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">th:text</span>=<span class="hljs-string">&quot;*&#123;lastName&#125;&quot;</span>&gt;</span>Pepper<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>.<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Nationality: <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">th:text</span>=<span class="hljs-string">&quot;*&#123;nationality&#125;&quot;</span>&gt;</span>Saturn<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>.<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br><br><span class="hljs-comment">&lt;!-- 等价于 --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Name: <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">th:text</span>=<span class="hljs-string">&quot;$&#123;session.user.firstName&#125;&quot;</span>&gt;</span>Sebastian<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>.<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Surname: <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">th:text</span>=<span class="hljs-string">&quot;$&#123;session.user.lastName&#125;&quot;</span>&gt;</span>Pepper<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>.<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Nationality: <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">th:text</span>=<span class="hljs-string">&quot;$&#123;session.user.nationality&#125;&quot;</span>&gt;</span>Saturn<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>.<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br><br><span class="hljs-comment">&lt;!-- 还可以混合使用--&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">th:object</span>=<span class="hljs-string">&quot;$&#123;session.user&#125;&quot;</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Name: <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">th:text</span>=<span class="hljs-string">&quot;*&#123;firstName&#125;&quot;</span>&gt;</span>Sebastian<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>.<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Surname: <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">th:text</span>=<span class="hljs-string">&quot;$&#123;session.user.lastName&#125;&quot;</span>&gt;</span>Pepper<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>.<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Nationality: <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">th:text</span>=<span class="hljs-string">&quot;*&#123;nationality&#125;&quot;</span>&gt;</span>Saturn<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>.<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br><span class="hljs-comment">&lt;!-- #object 引用表达式的对象 --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">th:object</span>=<span class="hljs-string">&quot;$&#123;session.user&#125;&quot;</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Name: <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">th:text</span>=<span class="hljs-string">&quot;$&#123;#object.firstName&#125;&quot;</span>&gt;</span>Sebastian<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>.<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Surname: <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">th:text</span>=<span class="hljs-string">&quot;$&#123;session.user.lastName&#125;&quot;</span>&gt;</span>Pepper<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>.<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Nationality: <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">th:text</span>=<span class="hljs-string">&quot;*&#123;nationality&#125;&quot;</span>&gt;</span>Saturn<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>.<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p><code>th:object</code>定义选择的对象,在标签内使用<code>*&#123;...&#125;</code>来取出对象中相应的数据，如果没有选择的对象直接使用<code>*&#123;...&#125;</code>等价于<code>#&#123;...&#125;</code></p>
+<p>###(4).Link URLs(链接URL)</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-comment">&lt;!-- Will produce &#x27;http://localhost:8080/gtvg/order/details?orderId=3&#x27; (plus rewriting) --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;details.html&quot;</span> </span><br><span class="hljs-tag">  <span class="hljs-attr">th:href</span>=<span class="hljs-string">&quot;@&#123;http://localhost:8080/gtvg/order/details(orderId=$&#123;o.id&#125;)&#125;&quot;</span>&gt;</span>view<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><br><br><span class="hljs-comment">&lt;!-- Will produce &#x27;/gtvg/order/details?orderId=3&#x27; (plus rewriting) --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;details.html&quot;</span> <span class="hljs-attr">th:href</span>=<span class="hljs-string">&quot;@&#123;/order/details(orderId=$&#123;o.id&#125;)&#125;&quot;</span>&gt;</span>view<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><br><br><span class="hljs-comment">&lt;!-- Will produce &#x27;/gtvg/order/3/details&#x27; (plus rewriting) --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;details.html&quot;</span> <span class="hljs-attr">th:href</span>=<span class="hljs-string">&quot;@&#123;/order/&#123;orderId&#125;/details(orderId=$&#123;o.id&#125;)&#125;&quot;</span>&gt;</span>view<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="5-Literals-文本"><a href="#5-Literals-文本" class="headerlink" title="(5).Literals(文本)"></a>(5).Literals(文本)</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-comment">&lt;!-- 基本的使用--&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span><br>  Now you are looking at a <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">th:text</span>=<span class="hljs-string">&quot;&#x27;working web application&#x27;&quot;</span>&gt;</span>template file<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>.<br><span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span><br><br><span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>The year is <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">th:text</span>=<span class="hljs-string">&quot;2013&quot;</span>&gt;</span>1492<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>.<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span> <br><br><span class="hljs-comment">&lt;!-- ==false 需要写在&#123;&#125;外面才交由thymeleaf处理，写在里面时交由 OGNL/SpringEL处理 --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">th:if</span>=<span class="hljs-string">&quot;$&#123;user.isAdmin()&#125; == false&quot;</span>&gt;</span> <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">th:if</span>=<span class="hljs-string">&quot;$&#123;user.isAdmin() == false&#125;&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br><span class="hljs-comment">&lt;!--判空--&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">th:if</span>=<span class="hljs-string">&quot;$&#123;variable.something&#125; == null&quot;</span>&gt;</span><br><span class="hljs-comment">&lt;!-- 文本链接 --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">th:text</span>=<span class="hljs-string">&quot;&#x27;The name of the user is &#x27; + $&#123;user.name&#125;&quot;</span>&gt;</span><br>  <br>  <br>  <span class="hljs-comment">&lt;!-- 文本替换,(免去+号链接字符串),需要写在 || 之间</span><br><span class="hljs-comment">        仅变量，信息表达式可以使用$&#123;...&#125;, *&#123;...&#125;, #&#123;...&#125;</span><br><span class="hljs-comment">--&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">th:text</span>=<span class="hljs-string">&quot;|Welcome to our application, $&#123;user.name&#125;!|&quot;</span>&gt;</span><br>    <br>    <br></code></pre></td></tr></table></figure>
+
+<h3 id="6-Arithmetic-operations-算术操作"><a href="#6-Arithmetic-operations-算术操作" class="headerlink" title="(6).Arithmetic operations(算术操作)"></a>(6).Arithmetic operations(算术操作)</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-comment">&lt;!-- 也可以使用文本 div (/), mod (%).--&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">th:with</span>=<span class="hljs-string">&quot;isEven=($&#123;prodStat.count&#125; % 2 == 0)&quot;</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="7-Comparators-and-Equality-比较"><a href="#7-Comparators-and-Equality-比较" class="headerlink" title="(7).Comparators and Equality(比较)"></a>(7).Comparators and Equality(比较)</h3><p>html起止标签的缘故，大于，小于等需要使用转义</p>
+<p><code>gt</code> (<code>&gt;</code>), <code>lt</code> (<code>&lt;</code>), <code>ge</code> (<code>&gt;=</code>), <code>le</code> (<code>&lt;=</code>), <code>not</code> (<code>!</code>) <code>eq</code> (<code>==</code>), <code>neq</code>&#x2F;<code>ne</code> (<code>!=</code>).</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">th:if</span>=<span class="hljs-string">&quot;$&#123;prodStat.count&#125; <span class="hljs-symbol">&amp;gt;</span> 1&quot;</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">th:text</span>=<span class="hljs-string">&quot;&#x27;Execution mode is &#x27; + ( ($&#123;execMode&#125; == &#x27;dev&#x27;)? &#x27;Development&#x27; : &#x27;Production&#x27;)&quot;</span> </span><br></code></pre></td></tr></table></figure>
+
+<h3 id="8-Conditional-expressions-条件表达式"><a href="#8-Conditional-expressions-条件表达式" class="headerlink" title="(8).Conditional expressions(条件表达式)"></a>(8).Conditional expressions(条件表达式)</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-comment">&lt;!--C中的三元运算符 --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">tr</span> <span class="hljs-attr">th:class</span>=<span class="hljs-string">&quot;$&#123;row.even&#125;? &#x27;even&#x27; : &#x27;odd&#x27;&quot;</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">tr</span>&gt;</span><br><span class="hljs-comment">&lt;!-- 省略--&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">tr</span> <span class="hljs-attr">th:class</span>=<span class="hljs-string">&quot;$&#123;row.even&#125;? &#x27;alt&#x27;&quot;</span>&gt;</span><br>  ...<br><span class="hljs-tag">&lt;/<span class="hljs-name">tr</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="9-Default-expressions-Elvis-operator-默认表达式"><a href="#9-Default-expressions-Elvis-operator-默认表达式" class="headerlink" title="(9). Default expressions (Elvis operator) 默认表达式"></a>(9). Default expressions (Elvis operator) 默认表达式</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">th:object</span>=<span class="hljs-string">&quot;$&#123;session.user&#125;&quot;</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Age: <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">th:text</span>=<span class="hljs-string">&quot;*&#123;age&#125;?: &#x27;(no age specified)&#x27;&quot;</span>&gt;</span>27<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>.<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br><span class="hljs-comment">&lt;!-- 等价于,省略表达式为true时的语句 --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Age: <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">th:text</span>=<span class="hljs-string">&quot;*&#123;age != null&#125;? *&#123;age&#125; : &#x27;(no age specified)&#x27;&quot;</span>&gt;</span>27<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>.<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="10-The-No-Operation-token-空操作符"><a href="#10-The-No-Operation-token-空操作符" class="headerlink" title="(10). The No-Operation token(空操作符)"></a>(10). The No-Operation token(空操作符)</h3><p>空操作符( No-Operation token)使用下划线表示<code>_</code>，它允许原生页面定义的文本为默认值,便于模板的设计</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">th:text</span>=<span class="hljs-string">&quot;$&#123;user.name&#125; ?: &#x27;no user authenticated&#x27;&quot;</span>&gt;</span>...<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">th:text</span>=<span class="hljs-string">&quot;$&#123;user.name&#125; ?: _&quot;</span>&gt;</span>no user authenticated<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="11-Data-Conversion-Formatting-数据转换-格式化"><a href="#11-Data-Conversion-Formatting-数据转换-格式化" class="headerlink" title="(11). Data Conversion &#x2F; Formatting (数据转换&#x2F;格式化)"></a>(11). Data Conversion &#x2F; Formatting (数据转换&#x2F;格式化)</h3><p>Thymeleaf 定义了双花括号语法用于变量<code>$&#123;...&#125;</code>和选择表达式<code>*&#123;...&#125;</code></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">td</span> <span class="hljs-attr">th:text</span>=<span class="hljs-string">&quot;$&#123;&#123;user.lastAccessDate&#125;&#125;&quot;</span>&gt;</span>...<span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="4-Iteration-遍历"><a href="#4-Iteration-遍历" class="headerlink" title="4.Iteration(遍历)"></a>4.Iteration(遍历)</h2><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">table</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">tr</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">th</span>&gt;</span>NAME<span class="hljs-tag">&lt;/<span class="hljs-name">th</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">th</span>&gt;</span>PRICE<span class="hljs-tag">&lt;/<span class="hljs-name">th</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">th</span>&gt;</span>IN STOCK<span class="hljs-tag">&lt;/<span class="hljs-name">th</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">tr</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">tr</span> <span class="hljs-attr">th:each</span>=<span class="hljs-string">&quot;prod,iterStat : $&#123;prods&#125;&quot;</span> <span class="hljs-attr">th:class</span>=<span class="hljs-string">&quot;$&#123;iterStat.odd&#125;? &#x27;odd&#x27;&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">td</span> <span class="hljs-attr">th:text</span>=<span class="hljs-string">&quot;$&#123;prod.name&#125;&quot;</span>&gt;</span>Onions<span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">td</span> <span class="hljs-attr">th:text</span>=<span class="hljs-string">&quot;$&#123;prod.price&#125;&quot;</span>&gt;</span>2.41<span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">td</span> <span class="hljs-attr">th:text</span>=<span class="hljs-string">&quot;$&#123;prod.inStock&#125;? #&#123;true&#125; : #&#123;false&#125;&quot;</span>&gt;</span>yes<span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">tr</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">table</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="th-each说明"><a href="#th-each说明" class="headerlink" title="th:each说明"></a>th:each说明</h3><p><code>prod</code>保存每次遍历的对象，<code>iterStat</code>保存遍历的相关信息</p>
+<ul>
+<li>The current <em>iteration index</em>, starting with 0. This is the <code>index</code> property. 遍历索引，从0开始</li>
+<li>The current <em>iteration index</em>, starting with 1. This is the <code>count</code> property. 遍历计数，从1开始</li>
+<li>The total amount of elements in the iterated variable. This is the <code>size</code> property.  被遍历对象的大小 </li>
+<li>The <em>iter variable</em> for each iteration. This is the <code>current</code> property. 当前遍历的对象</li>
+<li>Whether the current iteration is even or odd. These are the <code>even/odd</code> boolean properties. 奇偶布尔值</li>
+<li>Whether the current iteration is the first one. This is the <code>first</code> boolean property. 是否是遍历第一个</li>
+<li>Whether the current iteration is the last one. This is the <code>last</code> boolean property. 是否是遍历最后一个</li>
+</ul>
+<h3 id="被遍历的对象类型"><a href="#被遍历的对象类型" class="headerlink" title="被遍历的对象类型"></a>被遍历的对象类型</h3><ul>
+<li>Any object implementing <code>java.util.Iterable</code></li>
+<li>Any object implementing <code>java.util.Enumeration</code>.</li>
+<li>Any object implementing <code>java.util.Iterator</code>, whose values will be used as they are returned by the iterator, without the need to cache all values in memory.</li>
+<li>Any object implementing <code>java.util.Map</code>. When iterating maps, iter variables will be of class <code>java.util.Map.Entry</code>.</li>
+<li>Any array.</li>
+<li>Any other object will be treated as if it were a single-valued list containing the object itself.</li>
+</ul>
+<h2 id="5-Conditional-Evaluation-条件表达式"><a href="#5-Conditional-Evaluation-条件表达式" class="headerlink" title="5.Conditional Evaluation(条件表达式)"></a>5.Conditional Evaluation(条件表达式)</h2><h3 id="if和unless语句"><a href="#if和unless语句" class="headerlink" title="if和unless语句"></a>if和unless语句</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-comment">&lt;!-- 如果if表达式成立则显示该标签--&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;comments.html&quot;</span></span><br><span class="hljs-tag">  <span class="hljs-attr">th:href</span>=<span class="hljs-string">&quot;@&#123;/product/comments(prodId=$&#123;prod.id&#125;)&#125;&quot;</span> </span><br><span class="hljs-tag">  <span class="hljs-attr">th:if</span>=<span class="hljs-string">&quot;$&#123;not #lists.isEmpty(prod.comments)&#125;&quot;</span>&gt;</span>view<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><br><br><span class="hljs-comment">&lt;!--还可以使用相反的表达式unless --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;comments.html&quot;</span></span><br><span class="hljs-tag">  <span class="hljs-attr">th:href</span>=<span class="hljs-string">&quot;@&#123;/comments(prodId=$&#123;prod.id&#125;)&#125;&quot;</span> </span><br><span class="hljs-tag">  <span class="hljs-attr">th:unless</span>=<span class="hljs-string">&quot;$&#123;#lists.isEmpty(prod.comments)&#125;&quot;</span>&gt;</span>view<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="if遵循的规则"><a href="#if遵循的规则" class="headerlink" title="if遵循的规则"></a>if遵循的规则</h4><ul>
+<li>If value is not null:<ul>
+<li>If value is a boolean and is <code>true</code>.</li>
+<li>If value is a number and is non-zero</li>
+<li>If value is a character and is non-zero</li>
+<li>If value is a String and is not “false”, “off” or “no”</li>
+<li>If value is not a boolean, a number, a character or a String.</li>
+</ul>
+</li>
+<li>(If value is null, th:if will evaluate to false).</li>
+</ul>
+<h3 id="switch-case语句"><a href="#switch-case语句" class="headerlink" title="switch&#x2F;case语句"></a>switch&#x2F;case语句</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">th:switch</span>=<span class="hljs-string">&quot;$&#123;user.role&#125;&quot;</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">p</span> <span class="hljs-attr">th:case</span>=<span class="hljs-string">&quot;&#x27;admin&#x27;&quot;</span>&gt;</span>User is an administrator<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">p</span> <span class="hljs-attr">th:case</span>=<span class="hljs-string">&quot;#&#123;roles.manager&#125;&quot;</span>&gt;</span>User is a manager<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">p</span> <span class="hljs-attr">th:case</span>=<span class="hljs-string">&quot;*&quot;</span>&gt;</span>User is some other thing<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span> <span class="hljs-comment">&lt;!--默认值--&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="6-Template-Layout-模板布局"><a href="#6-Template-Layout-模板布局" class="headerlink" title="6.Template Layout (模板布局)"></a>6.Template Layout (模板布局)</h2><p>使用<code>th:fragment</code>定义需要复用的代码片段，<code>th:insert</code>或<code>th:replac</code>引用片段</p>
+<p><code>~&#123;templatename::selector&#125;</code> 引用片段 </p>
+<p><code>~&#123;templatename&#125;</code>引用整个文件 </p>
+<p><code>~&#123;::selector&#125;</code>或<code>~&#123;this::selector&#125;</code>引用自身的代码片段 </p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-comment">&lt;!--定义代码片段 --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">xmlns:th</span>=<span class="hljs-string">&quot;http://www.thymeleaf.org&quot;</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">th:fragment</span>=<span class="hljs-string">&quot;copy&quot;</span>&gt;</span><br>      <span class="hljs-symbol">&amp;copy;</span> 2011 The Good Thymes Virtual Grocery<br>    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span><br><br><span class="hljs-comment">&lt;!-- 引用代码片 --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">th:insert</span>=<span class="hljs-string">&quot;footer :: copy&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span><br><br><span class="hljs-comment">&lt;!-- 根据条件引用--&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">th:insert</span>=<span class="hljs-string">&quot;footer :: ($&#123;user.isAdmin&#125;? #&#123;footer.admin&#125; : #&#123;footer.normaluser&#125;)&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br><br><br><span class="hljs-comment">&lt;!-- 根据id引用 css选择器语法类似--&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;copy-section&quot;</span>&gt;</span><br>  <span class="hljs-symbol">&amp;copy;</span> 2011 The Good Thymes Virtual Grocery<br><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">th:insert</span>=<span class="hljs-string">&quot;~&#123;footer :: #copy-section&#125;&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h5 id="th-insert-th-replace-th-include"><a href="#th-insert-th-replace-th-include" class="headerlink" title="th:insert , th:replace ,th:include"></a><code>th:insert</code> , <code>th:replace</code> ,<code>th:include</code></h5><ul>
+<li><p><code>th:insert</code> is the simplest: it will simply insert the specified fragment as the body of its host tag. (在定义的标签体内引用代码片段)</p>
+</li>
+<li><p><code>th:replace</code> actually <em>replaces</em> its host tag with the specified fragment.(将定义标签替换为引用的代码片段)</p>
+</li>
+<li><p><code>th:include</code> is similar to <code>th:insert</code>, but instead of inserting the fragment it only inserts the <em>contents</em> of this fragment.(Thymeleaf 3.0后不推荐使用)</p>
+<h5 id="参数化方式引用代码片段-Parameterizable-fragment-signatures"><a href="#参数化方式引用代码片段-Parameterizable-fragment-signatures" class="headerlink" title="参数化方式引用代码片段(Parameterizable fragment signatures)"></a>参数化方式引用代码片段(Parameterizable fragment signatures)</h5><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-comment">&lt;!--定义参数化代码片段--&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">th:fragment</span>=<span class="hljs-string">&quot;frag (onevar,twovar)&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">p</span> <span class="hljs-attr">th:text</span>=<span class="hljs-string">&quot;$&#123;onevar&#125; + &#x27; - &#x27; + $&#123;twovar&#125;&quot;</span>&gt;</span>...<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br><span class="hljs-comment">&lt;!--使用 使用参数名时顺序不重要 --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">th:replace</span>=<span class="hljs-string">&quot;::frag ($&#123;value1&#125;,$&#123;value2&#125;)&quot;</span>&gt;</span>...<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">th:replace</span>=<span class="hljs-string">&quot;::frag (onevar=$&#123;value1&#125;,twovar=$&#123;value2&#125;)&quot;</span>&gt;</span>...<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">th:replace</span>=<span class="hljs-string">&quot;::frag (twovar=$&#123;value2&#125;,onevar=$&#123;value1&#125;)&quot;</span>&gt;</span>...<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br></code></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="7-Local-Variables-局部变量"><a href="#7-Local-Variables-局部变量" class="headerlink" title="7.Local Variables(局部变量)"></a>7.Local Variables(局部变量)</h2><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-comment">&lt;!-- 使用th:with定义,可以再标签体中使用--&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">th:with</span>=<span class="hljs-string">&quot;firstPer=$&#123;persons[0]&#125;&quot;</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span><br>    The name of the first person is <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">th:text</span>=<span class="hljs-string">&quot;$&#123;firstPer.name&#125;&quot;</span>&gt;</span>Julius Caesar<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>.<br>  <span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+
+
+
+<h2 id="8-参考资料"><a href="#8-参考资料" class="headerlink" title="8.参考资料"></a>8.参考资料</h2><p>1.Thymleaf Document(<a target="_blank" rel="noopener" href="http://www.thymeleaf.org/documentation.html">http://www.thymeleaf.org/documentation.html</a>)</p>
+<p>2.属性优先级(<a target="_blank" rel="noopener" href="http://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html#attribute-precedence">http://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html#attribute-precedence</a>)</p>
+<p>3.可用属性(<a target="_blank" rel="noopener" href="http://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html#setting-value-to-specific-attributes">http://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html#setting-value-to-specific-attributes</a>)</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Thymeleaf 3 学习</div>
+      <div>https://wtsai92.github.io/2017/11/28/thymeleaf-3-study/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>wtsai92</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2017年11月28日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2018/02/14/linux-cmd-1-bash-shell-command/" title="Linux命令行(1)Linux Bash Shell命令">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Linux命令行(1)Linux Bash Shell命令</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div class="disqus" style="width:100%">
+    <div id="disqus_thread"></div>
+    
+      <script type="text/javascript">
+        var disqus_config = function() {
+          this.page.url = 'https://wtsai92.github.io/2017/11/28/thymeleaf-3-study/';
+          this.page.identifier = '/2017/11/28/thymeleaf-3-study/';
+        };
+        Fluid.utils.loadComments('#disqus_thread', function() {
+          var d = document, s = d.createElement('script');
+          s.src = '//' + 'technonacgithub' + '.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', new Date());
+          (d.head || d.body).appendChild(s);
+        });
+      </script>
+    
+    <noscript>Please enable JavaScript to view the comments</noscript>
+  </div>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

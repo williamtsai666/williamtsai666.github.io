@@ -1,0 +1,854 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.ico">
+  <link rel="icon" href="/img/favicon.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wtsai92">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="逻辑流程控制通常称为结构化命令(structured command) 使用 if-then 语句1234if commandthen    commandsfi   bash shell的 if 语句会运行 if 后面的那个命令。如果该命令的退出状态码是0（该命令成功运行），位于 then 部分的命令就会被执行,如果该命令的退出状态码是其他值， then部分的命令就不会被执行，bash shel">
+<meta property="og:type" content="article">
+<meta property="og:title" content="shell脚本(2)结构化命令">
+<meta property="og:url" content="https://wtsai92.github.io/2018/02/20/shell-script-2-structed-command/index.html">
+<meta property="og:site_name" content="夏夜的博客">
+<meta property="og:description" content="逻辑流程控制通常称为结构化命令(structured command) 使用 if-then 语句1234if commandthen    commandsfi   bash shell的 if 语句会运行 if 后面的那个命令。如果该命令的退出状态码是0（该命令成功运行），位于 then 部分的命令就会被执行,如果该命令的退出状态码是其他值， then部分的命令就不会被执行，bash shel">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-02-20T15:33:50.000Z">
+<meta property="article:modified_time" content="2023-12-28T08:47:05.829Z">
+<meta property="article:author" content="wtsai92">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="Shell">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>shell脚本(2)结构化命令 - 夏夜的博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"wtsai92.github.io","root":"/","version":"1.9.5","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>夏夜的博客</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/reading/">
+                <i class="iconfont icon-books"></i>
+                <span>读书</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/night-sky.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="shell脚本(2)结构化命令"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2018-02-20 23:33" pubdate>
+          2018年2月20日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          10k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          88 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">shell脚本(2)结构化命令</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>逻辑流程控制通常称为结构化命令(structured command)</p>
+<h2 id="使用-if-then-语句"><a href="#使用-if-then-语句" class="headerlink" title="使用 if-then 语句"></a>使用 if-then 语句</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-keyword">if</span> <span class="hljs-built_in">command</span><br><span class="hljs-keyword">then</span><br>    commands<br><span class="hljs-keyword">fi</span><br></code></pre></td></tr></table></figure>
+
+
+<p>bash shell的 if 语句会运行 if 后面的那个命令。如果该命令的退出状态码是0（该命令成功运行），位于 then 部分的命令就会被执行,如果该命令的退出状态码是其他值， then部分的命令就不会被执行，bash shell会继续执行脚本中的下一个命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">cat</span> test1.sh<br><span class="hljs-comment"># !/bin/bash</span><br><span class="hljs-comment"># testing the if statement</span><br><span class="hljs-keyword">if</span> <span class="hljs-built_in">pwd</span><br><span class="hljs-keyword">then</span><br>    <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;It worked&quot;</span><br><span class="hljs-keyword">fi</span><br>$<br></code></pre></td></tr></table></figure>
+
+<p>if-then 语句的另一种形式：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-keyword">if</span> <span class="hljs-built_in">command</span>; <span class="hljs-keyword">then</span><br>commands <br><span class="hljs-keyword">fi</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="if-then-else-语句"><a href="#if-then-else-语句" class="headerlink" title="if-then-else 语句"></a>if-then-else 语句</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-keyword">if</span> <span class="hljs-built_in">command</span><br><span class="hljs-keyword">then</span><br>  commands<br><span class="hljs-keyword">else</span><br>  commands<br><span class="hljs-keyword">fi</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="嵌套-if"><a href="#嵌套-if" class="headerlink" title="嵌套 if"></a>嵌套 if</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-keyword">if</span> command1 <br><span class="hljs-keyword">then</span> <br>    <span class="hljs-built_in">command</span> <span class="hljs-built_in">set</span> 1 <br><span class="hljs-keyword">elif</span> command2 <br><span class="hljs-keyword">then</span> <br>   <span class="hljs-built_in">command</span> <span class="hljs-built_in">set</span> 2 <br><span class="hljs-keyword">elif</span> command3 <br><span class="hljs-keyword">then</span> <br>   <span class="hljs-built_in">command</span> <span class="hljs-built_in">set</span> 3 <br><span class="hljs-keyword">elif</span> command4 <br><span class="hljs-keyword">then</span> <br>   <span class="hljs-built_in">command</span> <span class="hljs-built_in">set</span> 4 <br><span class="hljs-keyword">fi</span> <br></code></pre></td></tr></table></figure>
+
+<h2 id="test-命令"><a href="#test-命令" class="headerlink" title="test 命令"></a>test 命令</h2><p>test 命令提供了在 if-then 语句中测试不同条件的途径,如果 test 命令中列出的条件成立,test 命令就会退出并返回退出状态码0。<br>test 命令的格式非常简单。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">test</span> condition<br>--------------------------------<br><span class="hljs-keyword">if</span> <span class="hljs-built_in">test</span> condition<br><span class="hljs-keyword">then</span><br>  commands<br><span class="hljs-keyword">fi</span><br></code></pre></td></tr></table></figure>
+
+<p> 判断内容是否为空</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">cat</span> test6.sh <br><span class="hljs-comment">#!/bin/bash </span><br><span class="hljs-comment"># Testing the test command </span><br><span class="hljs-comment"># </span><br>my_variable=<span class="hljs-string">&quot;&quot;</span> <br><span class="hljs-comment"># </span><br><span class="hljs-keyword">if</span> <span class="hljs-built_in">test</span> <span class="hljs-variable">$my_variable</span><br><span class="hljs-keyword">then</span> <br>   <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;The <span class="hljs-variable">$my_variable</span> expression returns a True&quot;</span> <br><span class="hljs-comment"># </span><br><span class="hljs-keyword">else</span> <br>   <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;The <span class="hljs-variable">$my_variable</span> expression returns a False&quot;</span> <br><span class="hljs-keyword">fi</span> <br>$ <br>$ ./test6.sh <br>The  expression returns a False <br>$ <br></code></pre></td></tr></table></figure>
+
+<p>bash shell提供了另一种条件测试方法，无需在 if-then 语句中声明 test 命令。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-keyword">if</span> [ condition ]<br><span class="hljs-keyword">then</span><br>  commands<br><span class="hljs-keyword">fi</span><br><span class="hljs-comment"># 方括号定义了测试条件。注意，第一个方括号之后和第二个方括号之前必须加上一个空格，否则就会报错。</span><br></code></pre></td></tr></table></figure>
+
+<p>test 命令可以判断三类条件：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs">数值比较<br>字符串比较<br>文件比较<br></code></pre></td></tr></table></figure>
+
+<h3 id="数值比较"><a href="#数值比较" class="headerlink" title="数值比较"></a>数值比较</h3><p>test命令的数值比较功能</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash">n1 -eq n2  检查n1是否与n2相等<br>n1 -ge n2  检查n1是否大于或等于n2 <br>n1 -gt n2  检查n1是否大于n2 <br>n1 -le n2  检查n1是否小于或等于n2 <br>n1 -lt n2  检查n1是否小于n2 <br>n1 -ne n2  检查n1是否不等于n2 <br></code></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">cat</span> numeric_test.sh<br><span class="hljs-comment"># !/bin/bash</span><br><span class="hljs-comment"># Using numeric test evaluations</span><br><span class="hljs-comment"># </span><br>value1=10<br>value2=11<br><span class="hljs-comment"># </span><br><span class="hljs-keyword">if</span> [ <span class="hljs-variable">$value1</span> -gt 5 ] <span class="hljs-comment"># 测试变量 value1 的值是否大于 5</span><br><span class="hljs-keyword">then</span><br>    <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;The test value <span class="hljs-variable">$value1</span> is greater than 5&quot;</span><br><span class="hljs-keyword">fi</span><br><span class="hljs-comment"># </span><br><span class="hljs-keyword">if</span> [ <span class="hljs-variable">$value1</span> -eq <span class="hljs-variable">$value2</span> ] <span class="hljs-comment"># 测试变量 value1 的值是否和变量 value2 的值相等</span><br><span class="hljs-keyword">then</span><br>    <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;The values are equal&quot;</span><br><span class="hljs-keyword">else</span><br>    <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;The values are different&quot;</span><br><span class="hljs-keyword">fi</span><br><span class="hljs-comment"># </span><br>$<br></code></pre></td></tr></table></figure>
+
+<h3 id="字符串比较"><a href="#字符串比较" class="headerlink" title="字符串比较"></a>字符串比较</h3><p>字符串比较测试 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash">str1 = str2   检查str1是否和str2相同<br>str1 != str2  检查str1是否和str2不同<br>str1 &lt; str2   检查str1是否比str2小<br>str1 &gt; str2   检查str1是否比str2大<br>-n str1       检查str1的长度是否非0<br>-z str1       检查str1的长度是否为0<br><br></code></pre></td></tr></table></figure>
+
+<h4 id="1-字符串相等性"><a href="#1-字符串相等性" class="headerlink" title="1.字符串相等性"></a>1.字符串相等性</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">cat</span> test7.sh <br><span class="hljs-comment">#!/bin/bash </span><br><span class="hljs-comment"># testing string equality </span><br>testuser=rich <br><span class="hljs-comment"># </span><br><span class="hljs-keyword">if</span> [ <span class="hljs-variable">$USER</span> = <span class="hljs-variable">$testuser</span> ] <br><span class="hljs-keyword">then</span> <br>   <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Welcome <span class="hljs-variable">$testuser</span>&quot;</span> <br><span class="hljs-keyword">fi</span> <br>$  <br>$ ./test7.sh <br>Welcome rich <br>$ <br></code></pre></td></tr></table></figure>
+
+<p>记住，在比较字符串的相等性时，比较测试会将所有的标点和大小写情况都考虑在内。</p>
+<h4 id="2-字符串顺序"><a href="#2-字符串顺序" class="headerlink" title="2.字符串顺序"></a>2.字符串顺序</h4><p>大于号和小于号必须转义，否则shell会把它们当作重定向符号，把字符串值当作文件名；<br>大于和小于顺序和 sort 命令所采用的不同。</p>
+<p>比较测试中使用的是标准的ASCII顺序，根据每个字符的ASCII数值来决定排序结果。 sort命令使用的是系统的本地化语言设置中定义的排序顺序</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">cat</span> test9.sh<br><span class="hljs-comment"># !/bin/bash</span><br><span class="hljs-comment"># mis-using string comparisons</span><br><span class="hljs-comment"># </span><br>val1=baseball<br>val2=hockey<br><span class="hljs-comment"># </span><br><span class="hljs-keyword">if</span> [ <span class="hljs-variable">$val1</span> \&gt; <span class="hljs-variable">$val2</span> ]<br>  <span class="hljs-keyword">then</span><br>  <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;<span class="hljs-variable">$val1</span> is greater than <span class="hljs-variable">$val2</span>&quot;</span><br><span class="hljs-keyword">else</span><br>  <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;<span class="hljs-variable">$val1</span> is less than <span class="hljs-variable">$val2</span>&quot;</span><br><span class="hljs-keyword">fi</span><br></code></pre></td></tr></table></figure>
+
+<p>注意,test 命令和测试表达式使用标准的数学比较符号来表示字符串比较，而用文本代码来表示数值比较</p>
+<h4 id="3-字符串大小"><a href="#3-字符串大小" class="headerlink" title="3.字符串大小"></a>3.字符串大小</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">cat</span> test10.sh <br><span class="hljs-comment">#!/bin/bash </span><br><span class="hljs-comment"># testing string length </span><br>val1=testing <br>val2=<span class="hljs-string">&#x27;&#x27;</span> <br><span class="hljs-comment"># </span><br><span class="hljs-keyword">if</span> [ -n <span class="hljs-variable">$val1</span> ] <br><span class="hljs-keyword">then</span> <br>   <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;The string &#x27;<span class="hljs-variable">$val1</span>&#x27; is not empty&quot;</span> <br><span class="hljs-keyword">else</span> <br>   <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;The string &#x27;<span class="hljs-variable">$val1</span>&#x27; is empty&quot;</span> <br><span class="hljs-keyword">fi</span> <br><span class="hljs-comment"># </span><br><span class="hljs-keyword">if</span> [ -z <span class="hljs-variable">$val2</span> ] <br><span class="hljs-keyword">then</span> <br>   <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;The string &#x27;<span class="hljs-variable">$val2</span>&#x27; is empty&quot;</span> <br><span class="hljs-keyword">else</span> <br>   <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;The string &#x27;<span class="hljs-variable">$val2</span>&#x27; is not empty&quot;</span> <br><span class="hljs-keyword">fi</span> <br><br><span class="hljs-keyword">if</span> [ -z <span class="hljs-variable">$val3</span> ] <span class="hljs-comment"># 未被定义过，长度为0</span><br><span class="hljs-keyword">then</span> <br>   <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;The string &#x27;<span class="hljs-variable">$val3</span>&#x27; is empty&quot;</span> <br><span class="hljs-keyword">else</span> <br>   <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;The string &#x27;<span class="hljs-variable">$val3</span>&#x27; is not empty&quot;</span> <br><span class="hljs-keyword">fi</span> <br>$  <br>$ ./test10.sh <br>The string <span class="hljs-string">&#x27;testing&#x27;</span> is not empty <br>The string <span class="hljs-string">&#x27;&#x27;</span> is empty <br>The string <span class="hljs-string">&#x27;&#x27;</span> is empty <br>$ <br></code></pre></td></tr></table></figure>
+
+<h3 id="文件比较"><a href="#文件比较" class="headerlink" title="文件比较"></a>文件比较</h3><p>文件比较是shell编程中最为强大、也是用得最多的比较形式。它允许你测试Linux文件系统上文件和目录的状态。</p>
+<p>test命令的文件比较功能</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs bash">-d file  检查file是否存在并是一个目录<br>-e file  检查file是否存在<br>-f file  检查file是否存在并是一个文件<br>-r file  检查file是否存在并可读<br>-s file  检查file是否存在并非空<br>-w file  检查file是否存在并可写<br>-x file  检查file是否存在并可执行<br>-O file  检查file是否存在并属当前用户所有<br>-G file  检查file是否存在并且默认组与当前用户相同<br>file1 -nt file2  检查file1是否比file2新<br>file1 -ot file2  检查file1是否比file2旧<br></code></pre></td></tr></table></figure>
+
+<h4 id="1-检查目录"><a href="#1-检查目录" class="headerlink" title="1.检查目录"></a>1.检查目录</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">cat</span> test11.sh<br><span class="hljs-comment"># !/bin/bash</span><br><span class="hljs-comment"># Look before you leap</span><br><span class="hljs-comment"># </span><br>jump_directory=/home/arthur<br><span class="hljs-comment"># </span><br><span class="hljs-keyword">if</span> [ -d <span class="hljs-variable">$jump_directory</span> ]<br><span class="hljs-keyword">then</span><br>  <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;The <span class="hljs-variable">$jump_directory</span> directory exists&quot;</span><br>  <span class="hljs-built_in">cd</span> <span class="hljs-variable">$jump_directory</span><br>  <span class="hljs-built_in">ls</span><br><span class="hljs-keyword">else</span><br>  <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;The <span class="hljs-variable">$jump_directory</span> directory does not exist&quot;</span><br><span class="hljs-keyword">fi</span><br><span class="hljs-comment"># $</span><br>$ ./test11.sh<br>The /home/arthur directory does not exist<br>$<br></code></pre></td></tr></table></figure>
+
+<h2 id="复合条件测试"><a href="#复合条件测试" class="headerlink" title="复合条件测试"></a>复合条件测试</h2><p>if-then 语句允许你使用布尔逻辑来组合测试。有两种布尔运算符可用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">[ condition1 ] &amp;&amp; [ condition2 ]<br>[ condition1 ] || [ condition2 ] <br></code></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">cat</span> test22.sh <br><span class="hljs-comment">#!/bin/bash </span><br><span class="hljs-keyword">if</span> [ -d <span class="hljs-variable">$HOME</span> ] &amp;&amp; [ -w <span class="hljs-variable">$HOME</span>/testing ] <br><span class="hljs-keyword">then</span> <br>   <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;The file exists and you can write to it&quot;</span> <br><span class="hljs-keyword">else</span> <br>   <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;I cannot write to the file&quot;</span> <br><span class="hljs-keyword">fi</span> <br></code></pre></td></tr></table></figure>
+
+<h2 id="if-then-的高级特性"><a href="#if-then-的高级特性" class="headerlink" title="if-then 的高级特性"></a>if-then 的高级特性</h2><p>bash shell提供了两项可在 if-then 语句中使用的高级特性：</p>
+<blockquote>
+<p>用于数学表达式的双括号</p>
+</blockquote>
+<blockquote>
+<p> 用于高级字符串处理功能的双方括号</p>
+</blockquote>
+<h3 id="使用双括号"><a href="#使用双括号" class="headerlink" title="使用双括号"></a>使用双括号</h3><p>双括号命令允许你在比较过程中使用高级数学表达式。 test 命令只能在比较中使用简单的<br>算术操作,双括号命令的格式如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">(( expression ))<br><br></code></pre></td></tr></table></figure>
+
+<p>双括号命令符号</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs bash">val++  后增<br>val--  后减<br>++val  先增<br>--val  先减<br>!      逻辑求反<br>~      位求反<br>**     幂运算<br>&lt;&lt;     左位移<br>&gt;&gt;     右位移<br>&amp;      位布尔和<br>|      位布尔或<br>&amp;&amp;     逻辑和<br>||     逻辑或<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">cat</span> test23.sh<br><span class="hljs-comment"># !/bin/bash</span><br><span class="hljs-comment"># using double parenthesis</span><br><span class="hljs-comment">#</span><br>val1=10<br><span class="hljs-comment"># </span><br><span class="hljs-keyword">if</span> (( <span class="hljs-variable">$val1</span> ** <span class="hljs-number">2</span> &gt; <span class="hljs-number">90</span> )) <span class="hljs-comment"># 不需要将双括号中表达式里的大于号转义</span><br><span class="hljs-keyword">then</span><br>  (( val2 = <span class="hljs-variable">$val1</span> ** <span class="hljs-number">2</span> ))<br>  <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;The square of <span class="hljs-variable">$val1</span> is <span class="hljs-variable">$val2</span>&quot;</span><br><span class="hljs-keyword">fi</span><br>$ <br>$ ./test23.sh<br>The square of 10 is 100<br>$<br></code></pre></td></tr></table></figure>
+
+<h3 id="使用双方括号"><a href="#使用双方括号" class="headerlink" title="使用双方括号"></a>使用双方括号</h3><p>双方括号命令提供了针对字符串比较的高级特性。双方括号命令的格式如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">[[ expression ]]<br></code></pre></td></tr></table></figure>
+
+<p>双方括号里的 expression 使用了 test 命令中采用的标准字符串比较。但它提供了 test 命令未提供的另一个特性——模式匹配（pattern matching）。</p>
+<p>在模式匹配中，可以定义一个正则表达式来匹配字符串值。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">cat</span> test24.sh<br><span class="hljs-comment"># !/bin/bash</span><br><span class="hljs-comment"># using pattern matching</span><br><span class="hljs-comment"># </span><br><span class="hljs-keyword">if</span> [[ <span class="hljs-variable">$USER</span> == r* ]]<br><span class="hljs-keyword">then</span><br>  <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Hello <span class="hljs-variable">$USER</span>&quot;</span><br><span class="hljs-keyword">else</span><br>  <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Sorry, I do not know you&quot;</span><br><span class="hljs-keyword">fi</span><br>$ <br>$ ./test24.sh<br>Hello rich<br>$<br></code></pre></td></tr></table></figure>
+
+<h2 id="case-命令"><a href="#case-命令" class="headerlink" title="case 命令"></a>case 命令</h2><p>case 命令会采用列表格式来检查单个变量的多个值</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-keyword">case</span> variable <span class="hljs-keyword">in</span><br>pattern1 | pattern2) commands1;;<br>pattern3) commands2;;<br>*) default commands;;<br><span class="hljs-keyword">esac</span><br></code></pre></td></tr></table></figure>
+
+<p>case 命令会将指定的变量与不同模式进行比较。如果变量和模式是匹配的，那么shell会执行为该模式指定的命令。可以通过竖线操作符在一行中分隔出多个模式模式。星号会捕获所有与已知模式不匹配的值</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">cat</span> test26.sh<br><span class="hljs-comment"># !/bin/bash</span><br><span class="hljs-comment"># using the case command</span><br><span class="hljs-comment"># </span><br><span class="hljs-keyword">case</span> <span class="hljs-variable">$USER</span> <span class="hljs-keyword">in</span><br>rich | barbara)<br>  <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Welcome, <span class="hljs-variable">$USER</span>&quot;</span><br>  <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Please enjoy your visit&quot;</span>;;<br>testing)<br>  <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Special testing account&quot;</span>;;<br>jessica)<br>  <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Do not forget to log off when you&#x27;re done&quot;</span>;;<br>*)<br>  <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Sorry, you are not allowed here&quot;</span>;;<br><span class="hljs-keyword">esac</span><br>$ <br>$ ./test26.sh<br>Welcome, rich<br>Please enjoy your visit<br>$<br></code></pre></td></tr></table></figure>
+
+<h2 id="for-命令"><a href="#for-命令" class="headerlink" title="for 命令"></a>for 命令</h2><p>bash shell提供了 for 命令，允许你创建一个遍历一系列值的循环。每次迭代都使用其中一个值来执行已定义好的一组命令。下面是bash shell中 for 命令的基本格式。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-keyword">for</span> var <span class="hljs-keyword">in</span> list<br><span class="hljs-keyword">do</span><br>  commands<br><span class="hljs-keyword">done</span><br>---------------------------<br><span class="hljs-keyword">for</span> var <span class="hljs-keyword">in</span> list; <span class="hljs-keyword">do</span><br>  commands<br><span class="hljs-keyword">done</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="读取列表中的值"><a href="#读取列表中的值" class="headerlink" title="读取列表中的值"></a>读取列表中的值</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">cat</span> test1<br><span class="hljs-comment"># !/bin/bash</span><br><span class="hljs-comment"># basic for command</span><br><span class="hljs-keyword">for</span> <span class="hljs-built_in">test</span> <span class="hljs-keyword">in</span> Alabama Alaska <br><span class="hljs-keyword">do</span><br>   <span class="hljs-built_in">echo</span> The next state is <span class="hljs-variable">$test</span><br><span class="hljs-keyword">done</span><br>$ ./test1<br>The next state is Alabama<br>The next state is Alaska<br>$<br></code></pre></td></tr></table></figure>
+
+<h3 id="读取列表中的复杂值"><a href="#读取列表中的复杂值" class="headerlink" title="读取列表中的复杂值"></a>读取列表中的复杂值</h3><p>使用转义字符（反斜线）来将单引号转义；<br>使用双引号来定义用到单引号的值。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">cat</span> test2<br><span class="hljs-comment"># !/bin/bash</span><br><span class="hljs-comment"># another example of how not to use the for command</span><br><span class="hljs-keyword">for</span> <span class="hljs-built_in">test</span> <span class="hljs-keyword">in</span> I don\&#x27;t know <span class="hljs-keyword">if</span> <span class="hljs-string">&quot;this&#x27;ll&quot;</span> work<br><span class="hljs-keyword">do</span><br>   <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;word:<span class="hljs-variable">$test</span>&quot;</span><br><span class="hljs-keyword">done</span><br>$ ./test2<br>word:I<br>word:don<span class="hljs-string">&#x27;t</span><br><span class="hljs-string">word:know</span><br><span class="hljs-string">word:if</span><br><span class="hljs-string">word:this&#x27;</span>ll<br>word:work<br>$<br></code></pre></td></tr></table></figure>
+
+<p>for 命令用<code>空格</code>来划分列表中的每个值。如果在单独的数据值中有空格，就必须用双引号将这些值圈起来</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">cat</span> test3<br><span class="hljs-comment"># !/bin/bash</span><br><span class="hljs-comment"># an example of how to properly define values</span><br><span class="hljs-keyword">for</span> <span class="hljs-built_in">test</span> <span class="hljs-keyword">in</span> Nevada <span class="hljs-string">&quot;New Hampshire&quot;</span> <span class="hljs-string">&quot;New Mexico&quot;</span> <span class="hljs-string">&quot;New York&quot;</span><br><span class="hljs-keyword">do</span><br>  <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Now going to <span class="hljs-variable">$test</span>&quot;</span><br><span class="hljs-keyword">done</span><br>$ ./test3<br>Now going to Nevada<br>Now going to New Hampshire<br>Now going to New Mexico<br>Now going to New York<br>$<br></code></pre></td></tr></table></figure>
+
+<h3 id="从变量读取列表"><a href="#从变量读取列表" class="headerlink" title="从变量读取列表"></a>从变量读取列表</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">cat</span> test4<br><span class="hljs-comment"># !/bin/bash</span><br><span class="hljs-comment"># using a variable to hold the list</span><br>list=<span class="hljs-string">&quot;Alabama Alaska Arizona&quot;</span><br>list=<span class="hljs-variable">$list</span><span class="hljs-string">&quot; Connecticut&quot;</span> <span class="hljs-comment"># 添加文本</span><br><span class="hljs-keyword">for</span> state <span class="hljs-keyword">in</span> <span class="hljs-variable">$list</span><br><span class="hljs-keyword">do</span><br>   <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Have you ever visited <span class="hljs-variable">$state</span>?&quot;</span><br><span class="hljs-keyword">done</span><br>$ ./test4<br>Have you ever visited Alabama?<br>Have you ever visited Alaska?<br>Have you ever visited Arizona?<br>Have you ever visited Connecticut?<br>$<br></code></pre></td></tr></table></figure>
+
+<p>添加&#x2F;拼接文本</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-variable">$var</span>=<span class="hljs-string">&#x27;hello&#x27;</span><br><span class="hljs-variable">$var</span>=<span class="hljs-variable">$var</span><span class="hljs-string">&quot; world!&quot;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="更改字段分隔符"><a href="#更改字段分隔符" class="headerlink" title="更改字段分隔符"></a>更改字段分隔符</h3><p>IFS(internal field separator,内部字段分隔符) 环境变量定义了bash shell用作字段分隔符的一系列字符。默认情况下，bash shell会将下列字符当作字段分隔符：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs">空格<br>制表符<br>换行符<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">cat</span> test5b<br><span class="hljs-comment"># !/bin/bash</span><br><span class="hljs-comment"># reading values from a file</span><br>file=<span class="hljs-string">&quot;states&quot;</span><br><span class="hljs-comment"># 可以在shell脚本中临时更改 IFS 环境变量的值来限制被bash shell当作字段分隔符的字符</span><br><span class="hljs-comment">#告诉bash shell在数据值中忽略空格和制表符</span><br>IFS=$<span class="hljs-string">&#x27;\n&#x27;</span><br> <span class="hljs-comment"># 命令替换$() 来执行任何能产生输出的命令，然后在 for 命令中使用该命令的输出</span><br><span class="hljs-keyword">for</span> state <span class="hljs-keyword">in</span> $(<span class="hljs-built_in">cat</span> <span class="hljs-variable">$file</span>)<br><span class="hljs-keyword">do</span><br>    <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Visit beautiful <span class="hljs-variable">$state</span>&quot;</span><br><span class="hljs-keyword">done</span><br>$ ./test5b<br>Visit beautiful Alabama<br>Visit beautiful North Carolina<br>$<br></code></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 还原IFS方法</span><br> 在处理代码量较大的脚本时，可能在一个地方需要修改 IFS 的值，然后忽略这次修改，在脚本的其他地方继续沿用 IFS 的默认值。一个可参考的安全实践是在改变 IFS 之前保存原来的 IFS 值，之后再恢复它。 <br>这种技术可以这样实现： <br>IFS.OLD=<span class="hljs-variable">$IFS</span> <br>IFS=$<span class="hljs-string">&#x27;\n&#x27;</span> <br>&lt;在代码中使用新的IFS值&gt; <br>IFS=<span class="hljs-variable">$IFS</span>.OLD <br>这就保证了在脚本的后续操作中使用的是 IFS 的默认值。 <br></code></pre></td></tr></table></figure>
+
+<p>还有其他一些 IFS 环境变量的绝妙用法。假定你要遍历一个文件中用冒号分隔的值（比如在&#x2F;etc&#x2F;passwd文件中）。你要做的就是将 IFS 的值设为冒号。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">IFS=:<br></code></pre></td></tr></table></figure>
+
+<p>如果要指定多个 IFS 字符，只要将它们在赋值行串起来就行。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">IFS=$<span class="hljs-string">&#x27;\n&#x27;</span>:;<span class="hljs-string">&quot;</span><br></code></pre></td></tr></table></figure>
+
+<p>这个赋值会将换行符、冒号、分号和双引号作为字段分隔符。如何使用 IFS 字符解析数据没有任何限制</p>
+<h3 id="用通配符读取目录"><a href="#用通配符读取目录" class="headerlink" title="用通配符读取目录"></a>用通配符读取目录</h3><p>可以用 for 命令来自动遍历目录中的文件。进行此操作时，必须在文件名或路径名中使用通配符。它会强制shell使用文件扩展匹配。文件扩展匹配是生成匹配指定通配符的文件名或路径名的过程。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">cat</span> test6<br><span class="hljs-comment"># !/bin/bash</span><br><span class="hljs-comment"># iterate through all the files in a directory</span><br><span class="hljs-keyword">for</span> file <span class="hljs-keyword">in</span> /home/rich/test/*<br><span class="hljs-keyword">do</span><br>    <span class="hljs-keyword">if</span> [ -d <span class="hljs-string">&quot;<span class="hljs-variable">$file</span>&quot;</span> ] <span class="hljs-comment">#路径可能包含空格，使用双引号括起来</span><br>    <span class="hljs-keyword">then</span><br>      <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;<span class="hljs-variable">$file</span> is a directory&quot;</span><br>    <span class="hljs-keyword">elif</span> [ -f <span class="hljs-string">&quot;<span class="hljs-variable">$file</span>&quot;</span> ]<br>    <span class="hljs-keyword">then</span><br>      <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;<span class="hljs-variable">$file</span> is a file&quot;</span><br>    <span class="hljs-keyword">fi</span><br><span class="hljs-keyword">done</span><br>$ ./test6<br>/home/rich/test/dir1 is a directory<br>/home/rich/test/myprog.c is a file<br>/home/rich/test/myprog is a file<br></code></pre></td></tr></table></figure>
+
+<h2 id="C-语言风格的-for-命令"><a href="#C-语言风格的-for-命令" class="headerlink" title="C 语言风格的 for 命令"></a>C 语言风格的 for 命令</h2><p>bash中C语言风格的 for 循环的基本格式如下:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-keyword">for</span> (( variable assignment ; condition ; iteration process ))<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">cat</span> test8<br><span class="hljs-comment"># !/bin/bash</span><br><span class="hljs-comment"># testing the C-style for loop</span><br><span class="hljs-keyword">for</span> (( i=<span class="hljs-number">1</span>; i &lt;= <span class="hljs-number">10</span>; i++ ))<br><span class="hljs-keyword">do</span><br>   <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;The next number is <span class="hljs-variable">$i</span>&quot;</span><br><span class="hljs-keyword">done</span><br></code></pre></td></tr></table></figure>
+
+<p>使用多个变量</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># !/bin/bash</span><br><span class="hljs-comment"># multiple variables</span><br><span class="hljs-keyword">for</span> (( a=<span class="hljs-number">1</span>, b=<span class="hljs-number">10</span>; a &lt;= <span class="hljs-number">10</span>; a++, b-- ))<br><span class="hljs-keyword">do</span><br>   <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;<span class="hljs-variable">$a</span> - <span class="hljs-variable">$b</span>&quot;</span><br><span class="hljs-keyword">done</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="while命令"><a href="#while命令" class="headerlink" title="while命令"></a>while命令</h2><p>while 命令允许定义一个要测试的命令，然后循环执行一组命令，只要定义的测试命令返回的是退出状态码 0 。它会在每次迭代的一开始测试 test 命令。在 test 命令返回非零退出状态码时， while 命令会停止执行那组命令。while 命令的格式是：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-keyword">while</span> <span class="hljs-built_in">test</span> <span class="hljs-built_in">command</span><br><span class="hljs-keyword">do</span><br>  other  commands<br><span class="hljs-keyword">done</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">cat</span> test10<br><span class="hljs-comment"># !/bin/bash</span><br><span class="hljs-comment"># while command test</span><br>var1=10<br><span class="hljs-keyword">while</span> [ <span class="hljs-variable">$var1</span> -gt 0 ]<br><span class="hljs-keyword">do</span><br>  <span class="hljs-built_in">echo</span> <span class="hljs-variable">$var1</span><br>  var1=$[ <span class="hljs-variable">$var1</span> - 1 ]<br><span class="hljs-keyword">done</span><br></code></pre></td></tr></table></figure>
+
+
+<p>while 命令允许你在 while 语句行定义多个测试命令。只有最后一个测试命令的退出状态码会被用来决定什么时候结束循环</p>
+<h2 id="until-命令"><a href="#until-命令" class="headerlink" title="until 命令"></a>until 命令</h2><p>until 命令和 while 命令工作的方式完全相反。until 命令要求你指定一个通常返回非零退出状态码的测试命令。只有测试命令的退出状态码不为 0 ，bash shell才会执行循环中列出的命令。一旦测试命令返回了退出状态码 0 ，循环就结束了。until 命令的格式如下:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-keyword">until</span> <span class="hljs-built_in">test</span> commands<br><span class="hljs-keyword">do</span><br>  other commands<br><span class="hljs-keyword">done</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">cat</span> test12<br><span class="hljs-comment"># !/bin/bash</span><br><span class="hljs-comment"># using the until command</span><br>var1=100<br><span class="hljs-keyword">until</span> [ <span class="hljs-variable">$var1</span> -eq 0 ]<br><span class="hljs-keyword">do</span><br>  <span class="hljs-built_in">echo</span> <span class="hljs-variable">$var1</span><br>  var1=$[ <span class="hljs-variable">$var1</span> - 25 ]<br><span class="hljs-keyword">done</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="循环处理文件数据"><a href="#循环处理文件数据" class="headerlink" title="循环处理文件数据"></a>循环处理文件数据</h2><p>通常必须遍历存储在文件中的数据。这要求结合已经讲过的两种技术：</p>
+<figure class="highlight excel"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs excel">使用嵌套循环<br>修改 <span class="hljs-built_in">IFS</span> 环境变量<br></code></pre></td></tr></table></figure>
+
+<p>这个脚本使用了两个不同的 IFS 值来解析数据。第一个 IFS 值解析出<code>/etc/passwd</code>文件中的单独的行。内部 for 循环接着将 IFS 的值修改为冒号，允许你从<code>/etc/passwd</code>的行中解析出单独的值</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># !/bin/bash</span><br><span class="hljs-comment"># changing the IFS value</span><br>IFS.OLD=<span class="hljs-variable">$IFS</span><br>IFS=$<span class="hljs-string">&#x27;\n&#x27;</span><br><span class="hljs-keyword">for</span> entry <span class="hljs-keyword">in</span> $(<span class="hljs-built_in">cat</span> /etc/passwd)<br><span class="hljs-keyword">do</span><br>    <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Values in <span class="hljs-variable">$entry</span> –&quot;</span><br>    IFS=:<br>    <span class="hljs-keyword">for</span> value <span class="hljs-keyword">in</span> <span class="hljs-variable">$entry</span><br>    <span class="hljs-keyword">do</span><br>      <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;<span class="hljs-variable">$value</span>&quot;</span><br>    <span class="hljs-keyword">done</span><br><span class="hljs-keyword">done</span><br>$<br></code></pre></td></tr></table></figure>
+
+<h2 id="控制循环"><a href="#控制循环" class="headerlink" title="控制循环"></a>控制循环</h2><p>有两个命令能帮我们控制循环内部的情况,<code>break</code>命令和<code>continue</code>命令。</p>
+<h3 id="break命令"><a href="#break命令" class="headerlink" title="break命令"></a>break命令</h3><p>用 break 命令来退出任意类型的循环，包括while 和 until 循环。</p>
+<p>有时你在内部循环，但需要停止外部循环。 break 命令接受单个命令行参数值：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">break</span> n<br></code></pre></td></tr></table></figure>
+
+<p>其中 n 指定了要跳出的循环层级。默认情况下， n 为 1 ，表明跳出的是当前的循环。如果你将n 设为 2 ， break 命令就会停止下一级的外部循环。</p>
+<h3 id="continue-命令"><a href="#continue-命令" class="headerlink" title="continue 命令"></a>continue 命令</h3><p>continue 命令可以提前中止某次循环中的命令，但并不会完全终止整个循环。可以在循环内部设置shell不执行命令的条件。</p>
+<p>continue 命令也允许通过命令行参数指定要继续执行哪一级循环：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">continue</span> n<br></code></pre></td></tr></table></figure>
+
+<p>其中 n 定义了要继续的循环层级。</p>
+<h2 id="处理循环的输出"><a href="#处理循环的输出" class="headerlink" title="处理循环的输出"></a>处理循环的输出</h2><p>在shell脚本中，你可以对循环的输出使用管道或进行重定向,可以通过在 done 命令之后添加一个处理命令来实现。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-keyword">for</span> file <span class="hljs-keyword">in</span> /home/rich/*<br><span class="hljs-keyword">do</span><br>  <span class="hljs-keyword">if</span> [ -d <span class="hljs-string">&quot;<span class="hljs-variable">$file</span>&quot;</span> ]<br>  <span class="hljs-keyword">then</span><br>      <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;<span class="hljs-variable">$file</span> is a directory&quot;</span><br>  <span class="hljs-keyword">elif</span><br>      <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;<span class="hljs-variable">$file</span> is a file&quot;</span><br>  <span class="hljs-keyword">fi</span><br><span class="hljs-keyword">done</span> &gt; output.txt<br><span class="hljs-comment"># shell会将 for 命令的结果重定向到文件output.txt中，而不是显示在屏幕上</span><br><span class="hljs-comment"># 这种方法同样适用于将循环的结果管接给另一个命令</span><br><span class="hljs-keyword">for</span> state <span class="hljs-keyword">in</span> <span class="hljs-string">&quot;North Dakota&quot;</span> Connecticut Illinois Alabama Tennessee <br><span class="hljs-keyword">do</span> <br>   <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;<span class="hljs-variable">$state</span> is the next place to go&quot;</span> <br><span class="hljs-keyword">done</span> | <span class="hljs-built_in">sort</span> <br><span class="hljs-comment"># 。 for 命令的输出传给了 sort 命令，该命令会改变 for 命令输出结果的顺序</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><h3 id="查找可执行文件"><a href="#查找可执行文件" class="headerlink" title="查找可执行文件"></a>查找可执行文件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">cat</span> test25<br><span class="hljs-comment"># !/bin/bash</span><br><span class="hljs-comment"># finding files in the PATH</span><br>IFS=:<br><span class="hljs-keyword">for</span> folder <span class="hljs-keyword">in</span> <span class="hljs-variable">$PATH</span> <span class="hljs-comment"># 对环境变量 PATH 中的目录进行迭代</span><br><span class="hljs-keyword">do</span><br>  <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;<span class="hljs-variable">$folder</span>:&quot;</span><br>  <span class="hljs-keyword">for</span> file <span class="hljs-keyword">in</span> <span class="hljs-variable">$folder</span>/* <span class="hljs-comment"># 迭代特定目录中的所有文件</span><br>  <span class="hljs-keyword">do</span><br>    <span class="hljs-keyword">if</span> [ -x <span class="hljs-variable">$file</span> ] <span class="hljs-comment"># 检查各个文件是否具有可执行权限</span><br>    <span class="hljs-keyword">then</span><br>      <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;  <span class="hljs-variable">$file</span>&quot;</span><br>    <span class="hljs-keyword">fi</span><br>  <span class="hljs-keyword">done</span><br><span class="hljs-keyword">done</span><br>$<br></code></pre></td></tr></table></figure>
+
+<h3 id="创建多个用户账户"><a href="#创建多个用户账户" class="headerlink" title="创建多个用户账户"></a>创建多个用户账户</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">cat</span> test26<br><span class="hljs-comment"># !/bin/bash</span><br><span class="hljs-comment"># process new user accounts</span><br>input=<span class="hljs-string">&quot;users.csv&quot;</span><br><span class="hljs-keyword">while</span> IFS=<span class="hljs-string">&#x27;,&#x27;</span> <span class="hljs-built_in">read</span> -r userid name<br><span class="hljs-keyword">do</span><br>  <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;adding <span class="hljs-variable">$userid</span>&quot;</span><br>  useradd -c <span class="hljs-string">&quot;<span class="hljs-variable">$name</span>&quot;</span> -m <span class="hljs-variable">$userid</span><br><span class="hljs-keyword">done</span> &lt; <span class="hljs-string">&quot;<span class="hljs-variable">$input</span>&quot;</span><br>$<br><span class="hljs-variable">$input</span> 变量指向数据文件，并且该变量被作为 <span class="hljs-keyword">while</span> 命令的重定向数据。<br></code></pre></td></tr></table></figure>
+<h2 id="参考书目"><a href="#参考书目" class="headerlink" title="参考书目"></a>参考书目</h2><p>《Linux命令行与shell脚本编程大全》第3版</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Linux/" class="print-no-link">#Linux</a>
+      
+        <a href="/tags/Shell/" class="print-no-link">#Shell</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>shell脚本(2)结构化命令</div>
+      <div>https://wtsai92.github.io/2018/02/20/shell-script-2-structed-command/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>wtsai92</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2018年2月20日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2018/02/21/shell-script-3-user-input/" title="shell脚本(3)处理用户输入">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">shell脚本(3)处理用户输入</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2018/02/19/shell-script-1-basic-script/" title="shell学习(1)构建基本脚本">
+                        <span class="hidden-mobile">shell学习(1)构建基本脚本</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div class="disqus" style="width:100%">
+    <div id="disqus_thread"></div>
+    
+      <script type="text/javascript">
+        var disqus_config = function() {
+          this.page.url = 'https://wtsai92.github.io/2018/02/20/shell-script-2-structed-command/';
+          this.page.identifier = '/2018/02/20/shell-script-2-structed-command/';
+        };
+        Fluid.utils.loadComments('#disqus_thread', function() {
+          var d = document, s = d.createElement('script');
+          s.src = '//' + 'technonacgithub' + '.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', new Date());
+          (d.head || d.body).appendChild(s);
+        });
+      </script>
+    
+    <noscript>Please enable JavaScript to view the comments</noscript>
+  </div>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
